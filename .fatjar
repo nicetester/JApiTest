@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Thu Jul 16 15:30:58 CST 2015
+onejar.license.required=true
+manifest.classpath=
+manifest.removesigners=true
+onejar.checkbox=false
+jarname=D\:\\project\\java\\jfinal_demo\\run.jar
+manifest.mergeall=false
+manifest.mainclass=
+manifest.file=MANIFEST.MF
+jarname.isextern=true
+onejar.expand=
+excludes=<jar|c3p0-0.9.1.2.jar>;<jar|freemarker-2.3.20.jar>;<jar|jfinal-2.0-bin-with-src.jar>;<jar|json_simple-1.1.jar>;<jar|jsoup-1.7.3.jar>;<jar|log4j-1.2.16.jar>;<jar|mysql-connector-java-5.1.20-bin.jar>;<jar|sqlite-jdbc-3.7.15-SNAPSHOT-2.jar>;<jar|jetty-server-8.1.8.jar>
+includes=
