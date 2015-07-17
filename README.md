@@ -2,8 +2,8 @@
 
 http接口测试工具
 
-![Alt text](./img/example1.jpg)
-![Alt text](./img/example2.png)
+![Alt text](./WebRoot/img/example1.jpg)
+![Alt text](./WebRoot/img/example2.png)
 
 **下载地址**
 [http://git.oschina.net/penngo/JApiTest/attach_files](http://git.oschina.net/penngo/JApiTest/attach_files)
