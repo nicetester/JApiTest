@@ -10,7 +10,7 @@ import com.jfinal.plugin.activerecord.Model;
  * 
  * 
  * 
-CREATE TABLE [project] (
+CREATE TABLE [project] ( 
 [id] INTEGER  NOT NULL PRIMARY KEY AUTOINCREMENT,
 [name] VARCHAR(50)  NOT NULL
 )

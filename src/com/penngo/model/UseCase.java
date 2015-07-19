@@ -9,7 +9,7 @@ import com.jfinal.plugin.activerecord.Model;
  * 
 CREATE TABLE [useCase] (
 [id] INTEGER  PRIMARY KEY AUTOINCREMENT NOT NULL,
-[pid] INTEGER  NOT NULL,
+[pid] INTEGER  NOT NULL, 
 [name] VARCHAR(50)  NULL,
 [url] VARCHAR(200)  NULL,
 [method] VARCHAR(10)  NULL,
