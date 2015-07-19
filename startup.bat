@@ -1,2 +1,2 @@
 @echo off
-java -jar run.jar
+java -jar run.jar 8000
