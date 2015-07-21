@@ -23,11 +23,12 @@ import com.penngo.model.UseCase;
  * API引导式配置
  */
 public class ApiConfig extends JFinalConfig {
-	public final static String dataPath = "/data/"; 
+	//public final static String dataPath = "/data/"; 
 	/**
 	 * 配置常量
 	 */
 	public void configConstant(Constants me) {
+	
 		PropKit.use("config.txt");
 		me.setDevMode(PropKit.getBoolean("devMode", false));
 	}

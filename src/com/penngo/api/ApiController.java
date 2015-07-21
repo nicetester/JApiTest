@@ -23,6 +23,7 @@ import com.penngo.model.Project;
 import com.penngo.model.UseCase;
 import com.penngo.util.CaseHttpRun;
 import com.penngo.util.Config;
+import com.penngo.util.Tool;
 
 public class ApiController extends Controller {
 	public void index() {
@@ -61,7 +62,9 @@ public class ApiController extends Controller {
 
 			json.put("case_type", type);
 			json.put("case_process", "0%");
-			json.put("case_time", "0");
+			int case_time = uc.get("caseTime") != null ? uc
+					.getInt("caseTime") + 1 : 0;
+			json.put("case_time", case_time);
 			resultList.add(json);
 		}
 		this.setAttr("caseList", JSONValue.toJSONString(resultList));
@@ -129,6 +132,7 @@ public class ApiController extends Controller {
 		Map<String, Object> resultData = null;
 		Map<String, Object> map = new HashMap<String, Object>();
 		resultData = CaseHttpRun.httpRunJson(url, request, method);
+		map.put("time", resultData.get("time"));
 		if (resultData.get("state").equals("success")) {
 			JSONObject countMap;
 			if(type.equals("json")){
@@ -209,6 +213,8 @@ public class ApiController extends Controller {
 		Map<String, Object> resultData = CaseHttpRun.httpRunJson(
 				useCase.getStr("url"), request, method);
 		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("time", resultData.get("time"));
 		if (resultData.get("state").equals("success")) {
 			JSONObject countMap;
 			if(type.equals("json")){

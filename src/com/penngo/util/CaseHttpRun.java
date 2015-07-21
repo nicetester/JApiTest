@@ -16,6 +16,7 @@ public class CaseHttpRun {
 	public static Map<String, Object> httpRunJson(String url, String parame, String method){
 		Object resultData = "";
 		Map<String, Object> map = new HashMap<String, Object>();
+		long start = System.currentTimeMillis();
 		try {
 			Connection conn = Jsoup
 					.connect(url)
@@ -60,6 +61,8 @@ public class CaseHttpRun {
 			map.put("msg", e.getMessage());
 			e.printStackTrace();
 		}
+		long end = System.currentTimeMillis();
+		map.put("time", end - start);
 		return map;
 	}
 	

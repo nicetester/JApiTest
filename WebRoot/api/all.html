@@ -12,6 +12,7 @@
  }
 </style>
 <script type="text/javascript">
+$.totalTime = 0;
 $(function(){
 	$("#navtab").ligerTab({
 		onAfterSelectTabItem: function (tabid){
@@ -81,16 +82,20 @@ $(function(){
 	
 });
 function runClick(){
+	 $.totalTime = 0;
 	 $("#passCase").text(0);
      $("#passCount").text(0);
      $("#failCount").text(0);
+     $("#time").text(0);
      $('#stateResult').css('background-color', '#d4d4d4');
 	var rows = $.case_maingrid.getSelectedRows();
 	// console.log("=======", rows);
 	if(rows.length > 0){
 		run(rows, 0);
 	}
-	
+	else{
+		$.ligerDialog.warn('请先选择需要执行的用例')
+	}
 }
 function run(data, i){
 	if(i < data.length){
@@ -116,10 +121,15 @@ function run(data, i){
 		            	case_process:'100%',
 		            	case_time:data.case_time
 		            });
+		            
+		            
 		            $("#passCase").text(i + 1);
 		            $("#passCount").text(parseInt($("#passCount").text()) + data.passCount);
 		            $("#failCount").text(parseInt($("#failCount").text()) + data.failCount);
-		         
+		            $.totalTime = $.totalTime + parseInt(data.time);
+		            
+		            $("#time").text(calTime($.totalTime));
+		            
 		    	}
 		    	else{
 		    		
@@ -144,6 +154,7 @@ function run(data, i){
 	<td>
 		<div id="stateResult" style="width:500px;padding: 8px; margin-top: 1em; background-color: #d4d4d4; color: white;">
 			<strong id="passCase">0</strong>/<strong>${caseSize}</strong> 用例完成：<strong id="passCount">0</strong> 通过，<strong id="failCount">0</strong> 失败。<!-- ，<strong id="exceCount">0</strong> 异常 -->
+			耗时：<strong id="time">0ms</strong>
 		</div>
 	</td>
 </tr>

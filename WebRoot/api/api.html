@@ -63,7 +63,7 @@ function addNewRow(){
     manager.addRow({
     	"id":manager.rows.length + 1,
     	"en_name" : "",
-    	"cn_name": "",
+    	//"cn_name": "",
         "type": "string",
         "default_value":"",
     });
@@ -92,29 +92,40 @@ function deleteRow(item){
 		manager = $.assert_maingrid;
 	}
 	else{
-		var manager = $.request_maingrid;
+		manager = $.request_maingrid;
 	}
-    var rows = manager.getSelectedRows();
-    if(rows.length > 0){
-    	var datas= {};
-    	for(var i = 0; i < rows.length; i++){
-    		var r = rows[i];
-    		datas[r.id] = true;
-        }
-        manager.deleteSelectedRow();
-        var rows = manager.rows;
-        var i = 1;
-        for(var key in rows){
-        	var r = rows[key];
-        	if(!!datas[r.id] != true){
-        		var selected = manager.getRow(r.__id);
-        		manager.updateRow(selected,{
-        	    	id: i
-        	    });
-        		i++;
-        	}
-        }
-       
+    var rows_select = manager.getSelectedRows();
+    
+    if(rows_select.length > 0){
+    	
+    	$.ligerDialog.confirm('提示内容', function (yes) {
+    		if(yes == true){
+    			
+        		var datas= {};
+            	for(var i = 0; i < rows_select.length; i++){
+            		var r = rows_select[i];
+            		datas[r.id] = true;
+                }
+                manager.deleteSelectedRow();
+                var rows2 = manager.rows;
+                var i = 1;
+                for(var key in rows2){
+                	var r = rows2[key];
+                	if(!!datas[r.id] != true){
+                		var selected = manager.getRow(r.__id);
+                		manager.updateRow(selected,{
+                	    	id: i
+                	    });
+                		i++;
+                	}
+                }
+    		}
+    		
+		});
+
+    }
+    else{
+    	$.ligerDialog.warn('请先选择参数');
     }
 }
 
@@ -205,7 +216,7 @@ $(function (){
     	columns: [
 				  { display: '序号', name: 'id', align: 'middle', width: 50},
                   { display: '英文名', name: 'en_name', align: 'left', width: 100, editor: { type: 'text' }},
-                  { display: '中文名', name: 'cn_name',width: 50, editor: { type: 'text' }},
+                  //{ display: '中文名', name: 'cn_name',width: 50, editor: { type: 'text' }},
                   { display: '类型', name: 'type', width: 100, editor: { type: 'select', data: type_data, valueField: 'type' },
                 	  render: function (item){
 		            	    for(var i = 0; i < type_data.length; i++){
@@ -228,7 +239,7 @@ $(function (){
                            { line: true },
                            { text: '添加', click: addNewRow, icon: 'add' },
                            { line: true },
-                           { text: '保存', click: saveItem, icon: 'save' }
+                           { text: '保存到参数', click: saveItem, icon: 'save' }
                            
                     ]
                   }
@@ -437,6 +448,7 @@ function assert_maingrid_parse(){
 	$.assert_maingrid.setWidth(200);
 
 }
+
 </script>
 
 <div class="table_box">
@@ -445,7 +457,8 @@ function assert_maingrid_parse(){
 <tr>
 	<td>
 		<div id="stateResult" style="padding: 8px; margin-top: 1em; background-color: #d4d4d4; color: white;">
-			1/1 用例完成：<strong id="passCount">0</strong> 通过，<strong id="failCount">0</strong> 失败。<!-- ，<strong id="exceCount">0</strong> 异常 -->
+			1/1 用例完成：<strong id="passCount">0</strong> 通过，<strong id="failCount">0</strong> 失败，<!-- ，<strong id="exceCount">0</strong> 异常 -->
+			耗时：<strong id="time">0ms</strong>
 		</div>
 	</td>
 </tr>
@@ -575,6 +588,8 @@ $("#btnExc").click(function(){
 		   			$('#stateResult').show();
 		   			$('#stateResult').css('background-color', 'red');
 		   		}
+		   		$('#time').text(calTime(data.time));
+		   		
 			   }, "json");
 });
 
