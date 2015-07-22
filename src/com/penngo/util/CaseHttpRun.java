@@ -13,13 +13,17 @@ import org.jsoup.Connection.Response;
 public class CaseHttpRun {
 	public static String HTTP_GET = "get";
 	public static String HTTP_POST = "post";
-	public static Map<String, Object> httpRunJson(String url, String parame, String method){
+	public static Map<String, Object> httpRunJson(String url, String parame, String method,  Integer timeout){
+		if(timeout == null){
+			timeout = 30;
+		}
 		Object resultData = "";
 		Map<String, Object> map = new HashMap<String, Object>();
 		long start = System.currentTimeMillis();
 		try {
 			Connection conn = Jsoup
 					.connect(url)
+					.timeout(timeout)
 					.userAgent(
 							"Mozilla/5.0 (Linux; Android 4.2.1; en-us; Nexus 4 Build/JOP40D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19");
 			if (parame != null && !parame.trim().equals("")) {
@@ -83,7 +87,7 @@ public class CaseHttpRun {
 //			Response res = conn.execute();
 			// res.body();
 //			System.out.println("========" + res.body());
-			Map<String, Object> body = CaseHttpRun.httpRunJson("http://www.oschina.net/", null, "");
+			Map<String, Object> body = CaseHttpRun.httpRunJson("http://www.oschina.net/", null, "", 30);
 			System.out.println("========" + JSONValue.toJSONString(body));
 		} catch (Exception e) {
 			e.printStackTrace();

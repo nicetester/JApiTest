@@ -125,7 +125,7 @@ public class ApiController extends Controller {
 		String type = useCase.getStr("type");
 		Map<String, Object> resultData = null;
 		Map<String, Object> map = new HashMap<String, Object>();
-		resultData = CaseHttpRun.httpRunJson(url, request, method);
+		resultData = CaseHttpRun.httpRunJson(url, request, method, 30);
 		map.put("time", resultData.get("time"));
 		if (resultData.get("state").equals("success")) {
 			JSONObject countMap;
@@ -205,7 +205,7 @@ public class ApiController extends Controller {
 		String method = useCase.getStr("method");
 		String type = useCase.getStr("type");
 		Map<String, Object> resultData = CaseHttpRun.httpRunJson(
-				useCase.getStr("url"), request, method);
+				useCase.getStr("url"), request, method, 30);
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("time", resultData.get("time"));

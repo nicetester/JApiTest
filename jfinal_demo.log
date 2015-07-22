@@ -8367,3 +8367,156 @@ java.lang.NullPointerException
 	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:608)
 	at org.eclipse.jetty.util.thread.QueuedThreadPool$3.run(QueuedThreadPool.java:543)
 	at java.lang.Thread.run(Thread.java:745)
+
+2015-07-22 12:54:12
+[WARN]-[Thread: Timer-1]-[com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector.run()]: com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector@9cc591 -- APPARENT DEADLOCK!!! Creating emergency threads for unassigned pending tasks!
+
+2015-07-22 12:54:12
+[WARN]-[Thread: Timer-1]-[com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector.run()]: com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector@9cc591 -- APPARENT DEADLOCK!!! Complete Status: 
+	Managed Threads: 3
+	Active Threads: 0
+	Active Tasks: 
+	Pending Tasks: 
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@785a79
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@17bcb82
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@6dee9f
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@14d3c3b
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@1ad7d8c
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@10da887
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@1b37735
+Pool thread stack traces:
+	Thread[com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#1,5,]
+	Thread[com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#0,5,]
+	Thread[com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#2,5,]
+
+
+
+2015-07-22 12:54:32
+[WARN]-[Thread: Timer-1]-[com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector.run()]: com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector@9cc591 -- APPARENT DEADLOCK!!! Creating emergency threads for unassigned pending tasks!
+
+2015-07-22 12:54:32
+[WARN]-[Thread: Timer-1]-[com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector.run()]: com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector@9cc591 -- APPARENT DEADLOCK!!! Complete Status: 
+	Managed Threads: 3
+	Active Threads: 0
+	Active Tasks: 
+	Pending Tasks: 
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@1072375
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@1a8ec64
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@137cb53
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@5c314
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@4a6572
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@4a25ab
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@1ef330a
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@10004ad
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@33150a
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@1aa4de2
+Pool thread stack traces:
+	Thread[com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#1,5,]
+	Thread[com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#2,5,]
+	Thread[com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#0,5,]
+
+
+
+2015-07-22 12:54:52
+[WARN]-[Thread: Timer-1]-[com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector.run()]: com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector@9cc591 -- APPARENT DEADLOCK!!! Creating emergency threads for unassigned pending tasks!
+
+2015-07-22 12:54:52
+[WARN]-[Thread: Timer-1]-[com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector.run()]: com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector@9cc591 -- APPARENT DEADLOCK!!! Complete Status: 
+	Managed Threads: 3
+	Active Threads: 0
+	Active Tasks: 
+	Pending Tasks: 
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@1878a17
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@17b0d9d
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@1bad3b1
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@a03155
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@106d63c
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@1db05df
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@5ea088
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@7d784d
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@1652434
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@12bed4f
+Pool thread stack traces:
+	Thread[com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#0,5,]
+	Thread[com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#2,5,]
+	Thread[com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#1,5,]
+
+
+
+2015-07-22 12:55:12
+[WARN]-[Thread: Timer-1]-[com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector.run()]: com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector@9cc591 -- APPARENT DEADLOCK!!! Creating emergency threads for unassigned pending tasks!
+
+2015-07-22 12:55:12
+[WARN]-[Thread: Timer-1]-[com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector.run()]: com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector@9cc591 -- APPARENT DEADLOCK!!! Complete Status: 
+	Managed Threads: 3
+	Active Threads: 0
+	Active Tasks: 
+	Pending Tasks: 
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@18e3013
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@1f66796
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@ab210
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@305d63
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@1432a60
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@9315af
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@74b547
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@298619
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@22ef16
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@17ebea9
+Pool thread stack traces:
+	Thread[com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#2,5,]
+	Thread[com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#0,5,]
+	Thread[com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#1,5,]
+
+
+
+2015-07-22 12:55:32
+[WARN]-[Thread: Timer-1]-[com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector.run()]: com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector@9cc591 -- APPARENT DEADLOCK!!! Creating emergency threads for unassigned pending tasks!
+
+2015-07-22 12:55:32
+[WARN]-[Thread: Timer-1]-[com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector.run()]: com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector@9cc591 -- APPARENT DEADLOCK!!! Complete Status: 
+	Managed Threads: 3
+	Active Threads: 0
+	Active Tasks: 
+	Pending Tasks: 
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@1e30850
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@36f7a0
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@bb4949
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@1c85d20
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@159e6f1
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@1490818
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@1b27d09
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@12f1015
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@c8f62f
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@19a9252
+Pool thread stack traces:
+	Thread[com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#2,5,]
+	Thread[com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#1,5,]
+	Thread[com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#0,5,]
+
+
+
+2015-07-22 12:55:52
+[WARN]-[Thread: Timer-1]-[com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector.run()]: com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector@9cc591 -- APPARENT DEADLOCK!!! Creating emergency threads for unassigned pending tasks!
+
+2015-07-22 12:55:52
+[WARN]-[Thread: Timer-1]-[com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector.run()]: com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector@9cc591 -- APPARENT DEADLOCK!!! Complete Status: 
+	Managed Threads: 3
+	Active Threads: 0
+	Active Tasks: 
+	Pending Tasks: 
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@196173
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@4cd88f
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@11dbb6b
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@fb934d
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@83c488
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@dbf981
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@1d9a778
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@81db1b
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@157f4f5
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@1930dd2
+Pool thread stack traces:
+	Thread[com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#0,5,]
+	Thread[com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#2,5,]
+	Thread[com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#1,5,]
+
+
