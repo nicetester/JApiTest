@@ -10,20 +10,14 @@ import java.util.Map;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
-import org.jsoup.Connection;
-import org.jsoup.Connection.Method;
-import org.jsoup.Connection.Response;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
-import com.jfinal.plugin.activerecord.Record;
 import com.penngo.model.Project;
 import com.penngo.model.UseCase;
 import com.penngo.util.CaseHttpRun;
-import com.penngo.util.Config;
-import com.penngo.util.Tool;
+import com.penngo.util.DataConfig;
+
 
 public class ApiController extends Controller {
 	public void index() {
@@ -58,7 +52,7 @@ public class ApiController extends Controller {
 			json.put("case_state", "未执行");
 			String type = uc.get("type") != null ? uc.get("type").toString()
 					: "";
-			type = Config.HTTP_CONTENT_TYPE.get(type);
+			type = DataConfig.HTTP_CONTENT_TYPE.get(type);
 
 			json.put("case_type", type);
 			json.put("case_process", "0%");
