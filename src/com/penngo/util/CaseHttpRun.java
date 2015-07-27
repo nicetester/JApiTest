@@ -13,9 +13,20 @@ import org.jsoup.Connection.Response;
 public class CaseHttpRun {
 	public static String HTTP_GET = "get";
 	public static String HTTP_POST = "post";
+	
+	/**
+	 * @param url
+	 * @param parame
+	 * @param method
+	 * @param timeout 秒
+	 * @return
+	 */
 	public static Map<String, Object> httpRunJson(String url, String parame, String method,  Integer timeout){
 		if(timeout == null){
-			timeout = 30;
+			timeout = 30000;
+		}
+		else{
+			timeout = timeout * 1000;
 		}
 		Object resultData = "";
 		Map<String, Object> map = new HashMap<String, Object>();

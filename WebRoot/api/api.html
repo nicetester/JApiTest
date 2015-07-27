@@ -482,6 +482,13 @@ function assert_maingrid_parse(){
 					<option value="UTF-8" <#if (useCase.code!"")=="UTF-8">selected</#if> >UTF-8</option>
 					<option value="GBK" <#if (useCase.code!"")=="GBK">selected</#if> >GBK</option>
 				</select>
+		超时:<select id="timeOut">
+					<option value="30" <#if (useCase.timeOut!"")==30 >selected</#if> >30s</option>
+					<option value="60" <#if (useCase.timeOut!"")==60 >selected</#if> >1min</option>
+					<option value="120" <#if (useCase.timeOut!"")==120 >selected</#if> >2min</option>
+					<option value="300" <#if (useCase.timeOut!"")==300 >selected</#if> >5min</option>
+				    <option value="600" <#if (useCase.timeOut!"")==600 >selected</#if> >10min</option>
+				</select>
 	</td>
 </tr>
 
@@ -551,7 +558,8 @@ $("#btnSave").click(function(){
 	var code = $("#code").val();
 	var request = $("#request").val();
 	var assertValue = getAssertValue();
-	$.post("/api/save", {"id":id, "url":url, "method": method, "type":type, "code":code,"request":request,"assertValue":assertValue},
+	var timeOut = $("#timeOut").val();
+	$.post("/api/save", {"id":id, "url":url, "method": method, "type":type, "code":code,"request":request,"assertValue":assertValue,"timeOut":timeOut},
 	   function(data){
 	  		if(data.state == 'success'){
 	  			$.ligerDialog.success('保存成功');
@@ -575,7 +583,8 @@ $("#btnExc").click(function(){
 	var code = $("#code").val();
 	var request = $("#request").val();
 	var assertValue = getAssertValue();
-	$.post("/api/execute", {"id":id, "url":url, "method": method, "type":type, "code":code, "request":request, "assertValue":assertValue},
+	var timeOut = $("#timeOut").val();
+	$.post("/api/execute", {"id":id, "url":url, "method": method, "type":type, "code":code, "request":request, "assertValue":assertValue,"timeOut":timeOut},
 			   function(data){
 		   		if(data.state == 'success'){
 		   			$('#response').val(JSON.stringify(data.data))

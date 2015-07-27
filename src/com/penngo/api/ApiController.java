@@ -83,7 +83,7 @@ public class ApiController extends Controller {
 		String code = this.getPara("code");
 		String request = this.getPara("request");
 		String assertValue = this.getPara("assertValue");
-
+		int timeOut = this.getParaToInt("timeOut");
 		UseCase useCase = UseCase.model.findById(id);
 		useCase.set("url", url);
 		useCase.set("method", method);
@@ -92,7 +92,7 @@ public class ApiController extends Controller {
 		useCase.set("request", request);
 		useCase.set("request", request);
 		useCase.set("assertValue", assertValue);
-
+		useCase.set("timeOut", timeOut);
 		useCase.update();
 		return useCase;
 	}
@@ -199,13 +199,15 @@ public class ApiController extends Controller {
 
 	public void executeById() {
 		String id = this.getPara("id");
+		System.out.println("executeById=" + id);
 		UseCase useCase = UseCase.model.findById(id);
 		String url = useCase.getStr("url");
 		String request = useCase.getStr("request");
 		String method = useCase.getStr("method");
 		String type = useCase.getStr("type");
+		int timeOut = useCase.getInt("timeOut") != null ? useCase.getInt("timeOut") : 30;
 		Map<String, Object> resultData = CaseHttpRun.httpRunJson(
-				useCase.getStr("url"), request, method, 30);
+				useCase.getStr("url"), request, method, timeOut);
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("time", resultData.get("time"));
@@ -263,24 +265,41 @@ public class ApiController extends Controller {
 
 	public void addCase() {
 		String pid = this.getPara("pid");
+		int id = this.getParaToInt("id");
 		String name = this.getPara("name");
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
-			UseCase useCase = new UseCase();
+			UseCase useCase = null;
+			if(id > 0){
+				useCase = UseCase.model.findById(id);
+			}
+			else{
+				useCase = new UseCase();
+			}
 			useCase.set("pid", Integer.valueOf(pid));
 			useCase.set("name", name);
-			useCase.save();
-
+			if(id > 0 ){
+				useCase.update();
+			}
+			else{
+				useCase.save();
+			}
 			JSONObject json = new JSONObject();
 			json.put("isexpand", "false");
 			json.put("slide", false);
 			json.put("data_id", useCase.getInt("id"));
+			json.put("pid", useCase.getInt("pid"));
 			json.put("text", useCase.getStr("name"));
 			json.put("node_type", useCase.TYPE);
 			json.put("url", "/api/api?id=" + useCase.getInt("id"));
-			JSONArray array = new JSONArray();
-			array.add(json);
-			result.put("data", array);
+			if(id > 0){
+				result.put("data", json);
+			}
+			else{
+				JSONArray array = new JSONArray();
+				array.add(json);
+				result.put("data", array);
+			}
 			result.put("state", "success");
 		} catch (Exception e) {
 			result.put("state", "error");
@@ -370,6 +389,7 @@ public class ApiController extends Controller {
 			json.put("isexpand", "false");
 			json.put("slide", false);
 			json.put("data_id", uc.getInt("id"));
+			json.put("pid", uc.getInt("pid"));
 			json.put("text", uc.getStr("name"));
 			json.put("node_type", uc.TYPE);
 			json.put("url", "/api/api?id=" + uc.getInt("id"));

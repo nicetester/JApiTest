@@ -57,22 +57,36 @@ function addProject(item, dialog){
 
 //添加案例
 function addCase(item, dialog){
-	//console.log("addCase=0====",select_node);
-	$("#case_dir_pid").val(node_data.data_id);
+	//console.log("addCase=0====",item, node_data);
+	var pid = node_data.data_id;
+	if(node_data.node_type == "useCase"){
+		pid = node_data.pid;
+		$("#case_dir_name").val(node_data.text);
+	}
+	$("#case_dir_pid").val(pid);
 	 $.ligerDialog.open({
 		 height:300,
 		 width: 400,
          target: $("#case_dir_target"), 
          buttons: [
              { text: '确定', onclick: function (item, dialog) {
-                 var pid = node_data.data_id;
+                 var id = 0;
+                 if(node_data.node_type == "useCase"){
+             		id = node_data.data_id;
+             	 }
                  var name = $("#case_dir_name").val();
-                
-                 $.post("/api/addCase", { "pid": pid, "name":name},
+                 $.post("/api/addCase", {"id":id, "pid": pid, "name":name},
             			   function(data){
 			                	if(data.state == 'success'){
 			                		if(select_node.data.isexpand == 'true' || (!select_node.data.children || select_node.data.children.length > 0)){
-			                			treeManager.append(select_node.target, data.data);
+			                			if(id == 0){
+			                				treeManager.append(select_node.target, data.data);
+			                			}
+			                			else{
+			                				//console.log("addCase=", select_node.target, data.data);
+			                				treeManager.update(select_node.target, data.data);
+			                				    //manager.update(node.target, { text: $("#txtNode").val() });
+			                			}
 			        		       	}
 				                	$.ligerDialog.success('添加成功');
 			              	 		dialog.hide();
@@ -143,7 +157,7 @@ $(function (){
          });
     var  caseItem_menu = $.ligerMenu({ top: 100, left: 100, width: 120, items:
         [
-         { text: '修改用例名', click: null },
+         { text: '修改用例名', click: addCase },
          { line: true },
          { text: '删除用例', click: deleteNode }
          ]
