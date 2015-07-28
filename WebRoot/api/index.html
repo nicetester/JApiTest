@@ -83,9 +83,7 @@ function addCase(item, dialog){
 			                				treeManager.append(select_node.target, data.data);
 			                			}
 			                			else{
-			                				//console.log("addCase=", select_node.target, data.data);
 			                				treeManager.update(select_node.target, data.data);
-			                				    //manager.update(node.target, { text: $("#txtNode").val() });
 			                			}
 			        		       	}
 				                	$.ligerDialog.success('添加成功');
@@ -110,10 +108,13 @@ function getChildNode(node){
 	//console.log(node.target, pid);
 	$.post("/api/getChildNode", { "node_type": node.data.node_type, "pid":pid},
 			   function(data){
-		 
-		      // console.log(data);
-		       treeManager.append(node.target, data);
-			    //alert('添加成功');
+		 		if(data.state == "success"){
+		 			treeManager.append(node.target, data.data);
+		 		}
+		 		else{
+		 			$.ligerDialog.error('加载失败');
+		 		}
+		    
 			   }, "json");
 }
 function deleteNode(){
@@ -138,6 +139,67 @@ function deleteNode(){
 	});
 	
 }
+// 复制用例
+function copyCase(item, dialog){
+	$.post("/api/getChildNode", {"node_type":"projects"},
+			   function(data){
+				console.log("getChildNode=====", data);
+		   		if(data.state == 'success'){
+		   			
+		   			//copy_id  copy_name copy_project_name  node_data
+		   			
+		   			
+		   			
+		   			
+		   			
+		   			var datas = data.data;
+		   			var ops = "";;
+		   			var projects = {};
+		   			for(var i = 0; i < datas.length; i++){
+		   				var d = datas[i];
+		   				ops = ops + '<option value="' + d['data_id'] + '">' + d['text'] + '</option>';
+		   				projects[d['data_id']] = d['text'];
+		   			}
+		   			$("#copy_pid").html(ops);
+		   			$("#copy_id").val(node_data.data_id);
+		   			$("#copy_name").val(node_data.text);
+		   			$("#copy_project_name").val(projects[node_data.pid]);
+		   			openCopyCase();
+		   		}
+		   		else{
+		   			$.ligerDialog.error('删除失败');
+		   		}
+			   }, "json");
+	
+	
+}
+
+function openCopyCase(){
+	 $.ligerDialog.open({
+			height:300,
+			width: 400,
+	        target: $("#copy_target"), 
+	        buttons: [
+	            { text: '确定', onclick: function (item, dialog) {
+	                var id = 0;
+	                if(node_data.node_type == "useCase"){
+	            		id = node_data.data_id;
+	            	 }
+	                var name = $("#case_dir_name").val();
+	                $.post("/api/addCase", {"id":id, "pid": pid, "name":name},
+	           			   function(data){
+				                	
+	           			   }, "json");
+	 
+		             }},
+		         { text: '取消', onclick: function (item, dialog) { 
+			        
+			         dialog.hide();
+	 	         } }
+	    ]
+	});
+}
+//
 $(function (){
 	// 案例弹出菜单///////////////////////////////////
  	 var project_menu = $.ligerMenu({ top: 100, left: 100, width: 120, items:
@@ -158,6 +220,7 @@ $(function (){
     var  caseItem_menu = $.ligerMenu({ top: 100, left: 100, width: 120, items:
         [
          { text: '修改用例名', click: addCase },
+         { text: '复制用例', click: copyCase },
          { line: true },
          { text: '删除用例', click: deleteNode }
          ]
@@ -386,6 +449,52 @@ $(function (){
  </div>
  <!-- 添加执行目录或执行池end -->
  
- 
+ <!-- 复制目录 -->
+ <div id="copy_target" style="width:350px; margin:3px; display:none;">
+    <table>
+    	<tr>
+    		<td>用例名：</td>
+    		<td>
+    			<input type="hidden" id="copy_id" name="copy_id" />
+    			<input type="text" id="copy_name" name="copy_name" readonly style="width:200px;"/>
+    		</td>
+    		
+    	</tr>
+    	<tr>
+    		<td>所在项目：</td>
+    		<td>
+    			<input type="text" id="copy_project_name" name="copy_project_name" style="width:200px;" readonly/>
+    			
+    		</td>
+    		
+    	</tr>
+    	<tr>
+    		<td colspan="2">
+    			<!-- 复制到以下项目  -->
+    			<br/><br/>
+    		</td>
+    		
+    		
+    	</tr>
+    	<tr>
+    		<td>新用例名：</td>
+    		<td>
+    			<input type="text" id="copy_new_name" name="copy_new_name" style="width:200px;"/>
+			</td>
+    	</tr>
+    	<tr>
+    		<td>复制到项目：</td>
+    		<td>
+    			<select name="copy_pid" id="copy_pid" style="width:200px;">
+    				<!-- 
+        			<option value="" selected >目录</option>
+        			<option value="">任务</option>
+        			 -->
+			    </select>
+			</td>
+    	</tr>
+    </table>
+ </div>
+ <!-- 复制目录end -->
  
 </@layout>

@@ -356,7 +356,7 @@ public class ApiController extends Controller {
 		JSONObject result = new JSONObject();
 		result.put("state", "success");
 		result.put("data", data);
-		this.renderJson(JSONValue.toJSONString(data));
+		this.renderJson(JSONValue.toJSONString(result));
 	}
 
 	public List<JSONObject> getAllProjects() {
