@@ -143,17 +143,16 @@ function deleteNode(){
 function copyCase(item, dialog){
 	$.post("/api/getChildNode", {"node_type":"projects"},
 			   function(data){
-				console.log("getChildNode=====", data);
+				console.log("getChildNode=====1", data,select_node);
+				console.log("getChildNode=====2", treeManager);
+				//var parent = treeManager.getParentTreeItem(select_node.target);
+				//console.log("getChildNode=====3", parent);
+				//var parent = select_node.parent();
+				console.log("getChildNode=====4", parent);
 		   		if(data.state == 'success'){
-		   			
-		   			//copy_id  copy_name copy_project_name  node_data
-		   			
-		   			
-		   			
-		   			
-		   			
+		   			// copy_id  copy_name copy_project_name  node_data
 		   			var datas = data.data;
-		   			var ops = "";;
+		   			var ops = "";
 		   			var projects = {};
 		   			for(var i = 0; i < datas.length; i++){
 		   				var d = datas[i];
@@ -163,8 +162,11 @@ function copyCase(item, dialog){
 		   			$("#copy_pid").html(ops);
 		   			$("#copy_id").val(node_data.data_id);
 		   			$("#copy_name").val(node_data.text);
+		   			
 		   			$("#copy_project_name").val(projects[node_data.pid]);
-		   			openCopyCase();
+		   			$("#copy_new_name").val(node_data.text);
+		   			
+		   			createCopyCase();
 		   		}
 		   		else{
 		   			$.ligerDialog.error('删除失败');
@@ -174,28 +176,27 @@ function copyCase(item, dialog){
 	
 }
 
-function openCopyCase(){
+function createCopyCase(){
 	 $.ligerDialog.open({
 			height:300,
 			width: 400,
 	        target: $("#copy_target"), 
 	        buttons: [
 	            { text: '确定', onclick: function (item, dialog) {
-	                var id = 0;
-	                if(node_data.node_type == "useCase"){
-	            		id = node_data.data_id;
-	            	 }
-	                var name = $("#case_dir_name").val();
-	                $.post("/api/addCase", {"id":id, "pid": pid, "name":name},
-	           			   function(data){
-				                	
-	           			   }, "json");
-	 
+	            	var id = node_data.data_id;
+	                var name = $("#copy_new_name").val();
+	            	var pid = $("#copy_pid").val();
+	                $.post("/api/copyCase", {"id":id, "pid": pid, "name":name},
+           			   function(data){
+		                	if(data.state == 'success'){
+		                		var parent = treeManager.getParentTreeItem(select_node.target);
+	                			treeManager.append(parent, data.data);
+		                	}
+           			   }, "json");
 		             }},
-		         { text: '取消', onclick: function (item, dialog) { 
-			        
+		         { text: '取消', onclick: function (item, dialog) {
 			         dialog.hide();
-	 	         } }
+	 	         }}
 	    ]
 	});
 }
@@ -477,13 +478,14 @@ $(function (){
     		
     	</tr>
     	<tr>
-    		<td>新用例名：</td>
+    		<td style="color:green;font-weight:700">新用例名：</td>
     		<td>
     			<input type="text" id="copy_new_name" name="copy_new_name" style="width:200px;"/>
+				<span style="color:red;font-weight:700">*</span>
 			</td>
     	</tr>
     	<tr>
-    		<td>复制到项目：</td>
+    		<td style="color:green;font-weight:700">复制到项目：</td>
     		<td>
     			<select name="copy_pid" id="copy_pid" style="width:200px;">
     				<!-- 
@@ -491,6 +493,7 @@ $(function (){
         			<option value="">任务</option>
         			 -->
 			    </select>
+			    <span style="color:red;font-weight:700">*</span>
 			</td>
     	</tr>
     </table>

@@ -56,6 +56,7 @@ public class ApiController extends Controller {
 
 			json.put("case_type", type);
 			json.put("case_process", "0%");
+			System.out.println("caseTime======" + uc.get("caseTime"));
 			int case_time = uc.get("caseTime") != null ? uc
 					.getInt("caseTime") + 1 : 0;
 			json.put("case_time", case_time);
@@ -93,6 +94,7 @@ public class ApiController extends Controller {
 		useCase.set("request", request);
 		useCase.set("assertValue", assertValue);
 		useCase.set("timeOut", timeOut);
+
 		useCase.update();
 		return useCase;
 	}
@@ -278,6 +280,9 @@ public class ApiController extends Controller {
 			}
 			useCase.set("pid", Integer.valueOf(pid));
 			useCase.set("name", name);
+			useCase.set("caseTime", 0);
+			useCase.set("dataSort", 0);
+			useCase.set("timeOut", 30);
 			if(id > 0 ){
 				useCase.update();
 			}
@@ -307,7 +312,52 @@ public class ApiController extends Controller {
 		}
 		this.renderJson(JSONValue.toJSONString(result));
 	}
-
+	public void copyCase() {
+		String pid = this.getPara("pid");
+		int id = this.getParaToInt("id");
+		String name = this.getPara("name");
+		Map<String, Object> result = new HashMap<String, Object>();
+		try {
+			UseCase copyCase = UseCase.model.findById(id);
+			UseCase useCase = new UseCase();
+			
+			useCase.set("pid", Integer.valueOf(pid));
+			useCase.set("name", name);
+			
+			useCase.set("url", copyCase.get("url"));
+			useCase.set("method", copyCase.get("method"));
+			useCase.set("type", copyCase.get("type"));
+			useCase.set("code", copyCase.get("code"));
+			useCase.set("request", copyCase.get("request"));
+			useCase.set("assertValue", copyCase.get("request"));
+			useCase.set("dataSort", 0);
+			useCase.set("timeOut", copyCase.get("timeOut"));
+			useCase.set("caseTime", 0);
+		
+			useCase.save();
+			JSONObject json = new JSONObject();
+			json.put("isexpand", "false");
+			json.put("slide", false);
+			json.put("data_id", useCase.getInt("id"));
+			json.put("pid", useCase.getInt("pid"));
+			json.put("text", useCase.getStr("name"));
+			json.put("node_type", useCase.TYPE);
+			json.put("url", "/api/api?id=" + useCase.getInt("id"));
+//			if(id > 0){
+//				result.put("data", json);
+//			}
+//			else{
+				JSONArray array = new JSONArray();
+				array.add(json);
+				result.put("data", array);
+//			}
+			result.put("state", "success");
+		} catch (Exception e) {
+			result.put("state", "error");
+			e.printStackTrace();
+		}
+		this.renderJson(JSONValue.toJSONString(result));
+	}
 	public void deleteNode() {
 		String id = this.getPara("id");
 		String type = this.getPara("type");
