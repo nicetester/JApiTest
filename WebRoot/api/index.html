@@ -25,17 +25,31 @@ var select_node;
 
 //添加目录
 function addProject(item, dialog){
+	//var id = node_data.data_id;    directory_name
+	//console.log("1===", node_data, node_data.node_type);
+	if(node_data.node_type == "project"){
+		//console.log("2===", node_data, node_data.text);
+		$("#directory_id").val(node_data.data_id);
+		$("#directory_name").val(node_data.text);
+	}
+	
 	 $.ligerDialog.open({
          target: $("#case_target"), 
          buttons: [
              { text: '确定', onclick: function (item, dialog) { 
+            	var id = $("#directory_id").val();
             	var directory_name = $("#directory_name").val();
-            	$.post("/api/addProject", { "directory_name": directory_name},
+            	$.post("/api/addProject", {"id":id, "directory_name": directory_name},
             			   function(data){
             		   		if(data.state == 'success'){
-            		   			if(select_node.data.isexpand == 'true' || (!select_node.data.children || select_node.data.children.length > 0)){
-            		    			treeManager.append(select_node.target, data.data);
-            			       	}
+            		   			//if(select_node.data.isexpand == 'true' || (!select_node.data.children || select_node.data.children.length > 0)){
+            		    			if(id == ""){
+            		    				treeManager.append(select_node.target, data.data);
+            		    			}
+            		    			else{
+            		    				treeManager.update(select_node.target, data.data);
+            		    			}
+            			       	//}
             		   			$.ligerDialog.success('添加成功');
             		   		}
             		   		else{
@@ -48,12 +62,8 @@ function addProject(item, dialog){
 	        	 dialog.hide();
  	         } }
      ]
-});
-	 
-	
+});	
 }
-
-
 
 //添加案例
 function addCase(item, dialog){
@@ -191,7 +201,14 @@ function createCopyCase(){
 		                	if(data.state == 'success'){
 		                		var parent = treeManager.getParentTreeItem(select_node.target);
 	                			treeManager.append(parent, data.data);
+	                			$.ligerDialog.success('复制用例成功');
+	                			dialog.hide();
 		                	}
+		                	else{
+		                		$.ligerDialog.error('复制用例失败');
+		                		dialog.hide();
+		                	}
+		                	
            			   }, "json");
 		             }},
 		         { text: '取消', onclick: function (item, dialog) {
@@ -213,7 +230,7 @@ $(function (){
     var  case_menu = $.ligerMenu({ top: 100, left: 100, width: 120, items:
         [
          { text: '添加用例', click: addCase, icon: 'add' },
-         { text: '修改项目', click: null },
+         { text: '修改项目', click: addProject },
          { line: true },
          { text: '删除项目', click: deleteNode }
          ]
@@ -340,6 +357,7 @@ $(function (){
 <div id="case_target" style="width:200px; margin:3px; display:none;">
     <h3>请输入目录名</h3>
     <div>
+        <input type="hidden" id="directory_id" name="directory_id" />
         <input type="text" id="directory_name" name="directory_name" /><br />
     </div>
  </div>

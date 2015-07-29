@@ -240,12 +240,24 @@ public class ApiController extends Controller {
 	}
 
 	public void addProject() {
+		String id = this.getPara("id");
 		String directory_name = this.getPara("directory_name");
-		Project project = new Project();
+		Project project;
+		if(!id.equals("")){
+			project = Project.model.findById(id);
+		}
+		else{
+			project = new Project();
+		}
 		project.set("name", directory_name);
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
-			project.save();
+			if(!id.equals("")){
+				project.update();
+			}
+			else{
+				project.save();
+			}
 			result.put("state", "success");
 			JSONObject json = new JSONObject();
 			json.put("isexpand", "false");
@@ -255,9 +267,19 @@ public class ApiController extends Controller {
 			json.put("node_type", project.TYPE);
 			json.put("url", "");
 			json.put("children", new ArrayList());
-			JSONArray array = new JSONArray();
-			array.add(json);
-			result.put("data", array);
+//			JSONArray array = new JSONArray();
+//			array.add(json);
+//			result.put("data", array);
+			
+			if(!id.equals("")){
+				result.put("data", json);
+			}
+			else{
+				JSONArray array = new JSONArray();
+				array.add(json);
+				result.put("data", array);
+			}
+			
 		} catch (Exception e) {
 			result.put("state", "error");
 			e.printStackTrace();
