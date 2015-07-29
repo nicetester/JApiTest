@@ -343,14 +343,11 @@ public class ApiController extends Controller {
 			json.put("text", useCase.getStr("name"));
 			json.put("node_type", useCase.TYPE);
 			json.put("url", "/api/api?id=" + useCase.getInt("id"));
-//			if(id > 0){
-//				result.put("data", json);
-//			}
-//			else{
-				JSONArray array = new JSONArray();
-				array.add(json);
-				result.put("data", array);
-//			}
+
+			JSONArray array = new JSONArray();
+			array.add(json);
+			result.put("data", array);
+
 			result.put("state", "success");
 		} catch (Exception e) {
 			result.put("state", "error");
