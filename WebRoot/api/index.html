@@ -27,6 +27,8 @@ var select_node;
 function addProject(item, dialog){
 	//var id = node_data.data_id;    directory_name
 	//console.log("1===", node_data, node_data.node_type);
+	$("#directory_id").val("");
+	$("#directory_name").val("");
 	if(node_data.node_type == "project"){
 		//console.log("2===", node_data, node_data.text);
 		$("#directory_id").val(node_data.data_id);
@@ -42,14 +44,14 @@ function addProject(item, dialog){
             	$.post("/api/addProject", {"id":id, "directory_name": directory_name},
             			   function(data){
             		   		if(data.state == 'success'){
-            		   			//if(select_node.data.isexpand == 'true' || (!select_node.data.children || select_node.data.children.length > 0)){
-            		    			if(id == ""){
-            		    				treeManager.append(select_node.target, data.data);
-            		    			}
-            		    			else{
-            		    				treeManager.update(select_node.target, data.data);
-            		    			}
-            			       	//}
+           		    			if(id == ""){
+           		    				if(select_node.data.isexpand == 'true' || (!select_node.data.children || select_node.data.children.length > 0)){
+           		    					treeManager.append(select_node.target, data.data);
+           		    				}
+           		    			}
+           		    			else{
+           		    				treeManager.update(select_node.target, data.data);
+           		    			}
             		   			$.ligerDialog.success('添加成功');
             		   		}
             		   		else{
@@ -222,25 +224,25 @@ $(function (){
 	// 案例弹出菜单///////////////////////////////////
  	 var project_menu = $.ligerMenu({ top: 100, left: 100, width: 120, items:
         [
-            { text: '添加项目', icon: 'add', click:addProject},
-        { text: '查看', click: function(){} }
+            { text: '添加项目', icon: 'add', click:addProject}
+        //{ text: '查看', click: function(){} }
         ]
         });
 	
     var  case_menu = $.ligerMenu({ top: 100, left: 100, width: 120, items:
         [
          { text: '添加用例', click: addCase, icon: 'add' },
-         { text: '修改项目', click: addProject },
+         { text: '修改项目', click: addProject, icon:'edit'},
          { line: true },
-         { text: '删除项目', click: deleteNode }
+         { text: '删除项目', click: deleteNode, icon:'delete' }
          ]
          });
     var  caseItem_menu = $.ligerMenu({ top: 100, left: 100, width: 120, items:
         [
-         { text: '修改用例名', click: addCase },
-         { text: '复制用例', click: copyCase },
+         { text: '修改用例名', click: addCase, icon:'edit' },
+         { text: '复制用例', click: copyCase, icon:'database' },
          { line: true },
-         { text: '删除用例', click: deleteNode }
+         { text: '删除用例', click: deleteNode, icon:'delete' }
          ]
          });
     //caseItem_menu.show({ top: e.pageY, left: e.pageX });
