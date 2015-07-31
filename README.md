@@ -2,7 +2,7 @@
 
 http接口测试工具
 
-![Alt text](./WebRoot/img/example1.jpg)
+![Alt text](./WebRoot/img/example1.png)
 ![Alt text](./WebRoot/img/example2.png)
 
 ----------
