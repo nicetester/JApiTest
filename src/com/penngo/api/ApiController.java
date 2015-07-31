@@ -56,7 +56,7 @@ public class ApiController extends Controller {
 
 			json.put("case_type", type);
 			json.put("case_process", "0%");
-			System.out.println("caseTime======" + uc.get("caseTime"));
+			//System.out.println("caseTime======" + uc.get("caseTime"));
 			int case_time = uc.get("caseTime") != null ? uc
 					.getInt("caseTime") + 1 : 0;
 			json.put("case_time", case_time);
