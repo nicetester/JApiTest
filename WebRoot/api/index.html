@@ -17,7 +17,7 @@
 </style>
 
 <script>
-var NOTE_TYPE = "";//<?php echo json_encode(TestDirectoryService::$NOTE_TYPE)?>;
+var NOTE_TYPE = "";
 var menu;
 var treeManager;
 var node_data;
@@ -50,7 +50,9 @@ function addProject(item, dialog){
            		    				}
            		    			}
            		    			else{
-           		    				treeManager.update(select_node.target, data.data);
+           		    				treeManager.update(select_node.target, {text:data.data.text});
+           		  	           		var tabid = data.data.node_type + data.data.data_id;
+           		    				$.tab.setHeader(tabid, data.data.text);
            		    			}
             		   			$.ligerDialog.success('添加成功');
             		   		}
@@ -96,6 +98,8 @@ function addCase(item, dialog){
 			                			}
 			                			else{
 			                				treeManager.update(select_node.target, data.data);
+			                				var tabid = data.data.node_type + data.data.data_id;
+		           		    				$.tab.setHeader(tabid, data.data.text);
 			                			}
 			        		       	}
 				                	$.ligerDialog.success('添加成功');
@@ -155,12 +159,6 @@ function deleteNode(){
 function copyCase(item, dialog){
 	$.post("/api/getChildNode", {"node_type":"projects"},
 			   function(data){
-				console.log("getChildNode=====1", data,select_node);
-				console.log("getChildNode=====2", treeManager);
-				//var parent = treeManager.getParentTreeItem(select_node.target);
-				//console.log("getChildNode=====3", parent);
-				//var parent = select_node.parent();
-				console.log("getChildNode=====4", parent);
 		   		if(data.state == 'success'){
 		   			// copy_id  copy_name copy_project_name  node_data
 		   			var datas = data.data;
@@ -255,13 +253,18 @@ $(function (){
 	       attribute: ['nodename', 'url'],
 	       onSelect: function (node)
 	       {
-	           if (!node.data.url) return;
-	           var tabid = $(node.target).attr("tabid");
-	           if (!tabid)
-	           {
-	               tabid = new Date().getTime();
-	               $(node.target).attr("tabid", tabid)
-	           } 
+	           if (!node.data.url) {
+	        	   return;
+	           }
+	           var node_type = node.data.node_type;
+	           var data_id = node.data.data_id;
+	           var tabid = node_type + data_id;
+	           //var tabid = $(node.target).attr("tabid");
+	           //if (!tabid)
+	           //{
+	           //    tabid = new Date().getTime();
+	           //    $(node.target).attr("tabid", tabid)
+	           //} 
 	           f_addTab(tabid, node.data.text, node.data.url);
 	       },
 	       onContextmenu: function (node, e){
@@ -310,7 +313,7 @@ $(function (){
 		
  	  //右边选项卡
       //Tab
-      var tab = $("#framecenter").ligerTab({
+      var tab = $.tab = $("#framecenter").ligerTab({
           height: '100%',
           changeHeightOnResize:true,
           showSwitchInTab : true,

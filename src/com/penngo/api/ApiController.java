@@ -263,7 +263,8 @@ public class ApiController extends Controller {
 			json.put("data_id", project.getInt("id"));
 			json.put("text", project.getStr("name"));
 			json.put("node_type", project.TYPE);
-			json.put("url", "");
+			json.put("url", "/api/all?id=" + project.getInt("id"));
+			//json.put("url", "");
 			json.put("children", new ArrayList());
 //			JSONArray array = new JSONArray();
 //			array.add(json);
