@@ -154,7 +154,6 @@ public class ApiController extends Controller {
 	private JSONObject checkCase(UseCase useCase, Object data) {
 		int passCount = 0;
 		int failCount = 0;
-		//int exceCount = 0;
 		int totalCount = 0;
 		if (useCase != null && data!= null) {
 			JSONObject resultData = (JSONObject)data;
