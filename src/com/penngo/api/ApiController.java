@@ -1,5 +1,6 @@
 package com.penngo.api;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -16,6 +17,7 @@ import com.penngo.model.Project;
 import com.penngo.model.UseCase;
 import com.penngo.util.CaseHttpRun;
 import com.penngo.util.DataConfig;
+import com.penngo.util.Tool;
 
 
 public class ApiController extends Controller {
@@ -466,5 +468,19 @@ public class ApiController extends Controller {
 		return data;
 	}
 
-	
+	public void exportCase(){
+		String path = this.getRequest().getContextPath();
+		String filePath = path + "/" + Tool.getExportPath();
+		
+		//System.out.println("exportCase=" + this.getRequest().getContextPath());
+		//System.out.println("exportCase=" + new File("").getAbsolutePath());
+//		this.renderFile("");
+//		String pid = this.getPara("pid");
+//		List<JSONObject> list = this.getAllUseCase(pid);
+//		if(list.size() > 0){
+//			
+//		}
+		
+	}
 }
+

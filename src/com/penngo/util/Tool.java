@@ -1,8 +1,11 @@
 package com.penngo.util;
 
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Tool {
+	public final static String DATA_PATH = "/data";
 	public static String calTime(long time){
 		String str = time + " ms";
 		BigDecimal t1 = new BigDecimal(time);
@@ -20,7 +23,11 @@ public class Tool {
 		
 		return str;
 	}
-	
+	public static String getExportPath(){
+		String pattern = "yyyy/MM/dd";
+		SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+		return sdf.format(new Date());
+	}
 	public static void main(String[] args){
 //		System.out.println(calTime(100000));
 	}
