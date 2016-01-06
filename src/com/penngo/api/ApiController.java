@@ -352,7 +352,7 @@ public class ApiController extends Controller {
 			useCase.set("type", copyCase.get("type"));
 			useCase.set("code", copyCase.get("code"));
 			useCase.set("request", copyCase.get("request"));
-			useCase.set("assertValue", copyCase.get("request"));
+			useCase.set("assertValue", copyCase.get("assertValue"));
 			useCase.set("dataSort", 0);
 			useCase.set("timeOut", copyCase.get("timeOut"));
 			useCase.set("caseTime", 0);
