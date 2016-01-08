@@ -1,4 +1,5 @@
 
+<<<<<<< HEAD
 2015-08-10 00:25:23
 [ERROR]-[Thread: qtp32058896-22]-[com.jfinal.core.ActionHandler.handle()]: /api/exportCase
 com.jfinal.render.RenderException: java.io.FileNotFoundException: Template "/api/exportCase.html" not found.
@@ -315,10 +316,18 @@ Pool thread stack traces:
 
 2015-08-10 00:39:36
 [WARN]-[Thread: Timer-1]-[com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector.run()]: com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector@f3ee57 -- APPARENT DEADLOCK!!! Complete Status: 
+=======
+2016-01-08 16:56:36
+[WARN]-[Thread: Timer-1]-[com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector.run()]: com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector@15227d3 -- APPARENT DEADLOCK!!! Creating emergency threads for unassigned pending tasks!
+
+2016-01-08 16:56:36
+[WARN]-[Thread: Timer-1]-[com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector.run()]: com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector@15227d3 -- APPARENT DEADLOCK!!! Complete Status: 
+>>>>>>> 5a0136a911929a35766afc38acdeac148c4fb960
 	Managed Threads: 3
 	Active Threads: 0
 	Active Tasks: 
 	Pending Tasks: 
+<<<<<<< HEAD
 		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@1313905
 		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@967e07
 		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@2c0b34
@@ -358,19 +367,40 @@ Pool thread stack traces:
 Pool thread stack traces:
 	Thread[com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#1,5,]
 	Thread[com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#2,5,]
+=======
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@26ea08
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@cec6c9
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@15cd969
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@c5af75
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@825e02
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@ea0dfc
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@3c347a
+Pool thread stack traces:
+	Thread[com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#2,5,]
+	Thread[com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#1,5,]
+>>>>>>> 5a0136a911929a35766afc38acdeac148c4fb960
 	Thread[com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#0,5,]
 
 
 
+<<<<<<< HEAD
 2015-08-10 00:40:16
 [WARN]-[Thread: Timer-1]-[com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector.run()]: com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector@f3ee57 -- APPARENT DEADLOCK!!! Creating emergency threads for unassigned pending tasks!
 
 2015-08-10 00:40:16
 [WARN]-[Thread: Timer-1]-[com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector.run()]: com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector@f3ee57 -- APPARENT DEADLOCK!!! Complete Status: 
+=======
+2016-01-08 16:56:56
+[WARN]-[Thread: Timer-1]-[com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector.run()]: com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector@15227d3 -- APPARENT DEADLOCK!!! Creating emergency threads for unassigned pending tasks!
+
+2016-01-08 16:56:56
+[WARN]-[Thread: Timer-1]-[com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector.run()]: com.mchange.v2.async.ThreadPoolAsynchronousRunner$DeadlockDetector@15227d3 -- APPARENT DEADLOCK!!! Complete Status: 
+>>>>>>> 5a0136a911929a35766afc38acdeac148c4fb960
 	Managed Threads: 3
 	Active Threads: 0
 	Active Tasks: 
 	Pending Tasks: 
+<<<<<<< HEAD
 		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@1c7cb10
 		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@1e4bfbe
 		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@e88006
@@ -437,5 +467,21 @@ Pool thread stack traces:
 	Thread[com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#0,5,]
 	Thread[com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#2,5,]
 	Thread[com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#1,5,]
+=======
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@1bbd50b
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@9fd887
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@40af64
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@baff9a
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@e2f388
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@1e27dc4
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@aeea7f
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@1a54cb6
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@14f7c0a
+		com.mchange.v2.resourcepool.BasicResourcePool$AcquireTask@158aa89
+Pool thread stack traces:
+	Thread[com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#2,5,]
+	Thread[com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#1,5,]
+	Thread[com.mchange.v2.async.ThreadPoolAsynchronousRunner$PoolThread-#0,5,]
+>>>>>>> 5a0136a911929a35766afc38acdeac148c4fb960
 
 
