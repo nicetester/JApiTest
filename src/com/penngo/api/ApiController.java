@@ -289,6 +289,7 @@ public class ApiController extends Controller {
 	public void addCase() {
 		String pid = this.getPara("pid");
 		int id = this.getParaToInt("id");
+		System.out.println("addCase===" + id);
 		String name = this.getPara("name");
 		Map<String, Object> result = new HashMap<String, Object>();
 		try {
