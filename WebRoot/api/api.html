@@ -150,7 +150,6 @@ function addAssert(){
 		for(var i = 0; i < rows.length; i++){
 			var r = rows[i];
 			var d = {};
-			//d['cn_name'] = r['cn_name'];
 			d['default_value'] = r['default_value'];
 			d['en_name'] = r['en_name'];
 			d['type'] = r['type'];
@@ -167,7 +166,6 @@ function addAssert(){
 	else{
 		$.ligerDialog.success('请先选择字段');
 	}
-	//$.assert_maingrid.update();
 }
 
 function getAssertValue(){

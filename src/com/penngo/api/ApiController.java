@@ -1,5 +1,6 @@
 package com.penngo.api;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -16,6 +17,7 @@ import com.penngo.model.Project;
 import com.penngo.model.UseCase;
 import com.penngo.util.CaseHttpRun;
 import com.penngo.util.DataConfig;
+import com.penngo.util.Tool;
 
 
 public class ApiController extends Controller {
@@ -154,7 +156,6 @@ public class ApiController extends Controller {
 	private JSONObject checkCase(UseCase useCase, Object data) {
 		int passCount = 0;
 		int failCount = 0;
-		//int exceCount = 0;
 		int totalCount = 0;
 		if (useCase != null && data!= null) {
 			JSONObject resultData = (JSONObject)data;
@@ -264,7 +265,8 @@ public class ApiController extends Controller {
 			json.put("data_id", project.getInt("id"));
 			json.put("text", project.getStr("name"));
 			json.put("node_type", project.TYPE);
-			json.put("url", "");
+			json.put("url", "/api/all?id=" + project.getInt("id"));
+			//json.put("url", "");
 			json.put("children", new ArrayList());
 //			JSONArray array = new JSONArray();
 //			array.add(json);
@@ -350,7 +352,7 @@ public class ApiController extends Controller {
 			useCase.set("type", copyCase.get("type"));
 			useCase.set("code", copyCase.get("code"));
 			useCase.set("request", copyCase.get("request"));
-			useCase.set("assertValue", copyCase.get("request"));
+			useCase.set("assertValue", copyCase.get("assertValue"));
 			useCase.set("dataSort", 0);
 			useCase.set("timeOut", copyCase.get("timeOut"));
 			useCase.set("caseTime", 0);
@@ -466,5 +468,19 @@ public class ApiController extends Controller {
 		return data;
 	}
 
-	
+	public void exportCase(){
+		String path = this.getRequest().getContextPath();
+		String filePath = path + "/" + Tool.getExportPath();
+		
+		//System.out.println("exportCase=" + this.getRequest().getContextPath());
+		//System.out.println("exportCase=" + new File("").getAbsolutePath());
+//		this.renderFile("");
+//		String pid = this.getPara("pid");
+//		List<JSONObject> list = this.getAllUseCase(pid);
+//		if(list.size() > 0){
+//			
+//		}
+		
+	}
 }
+
