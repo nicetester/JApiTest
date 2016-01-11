@@ -162,6 +162,8 @@ public class ApiController extends Controller {
 			String assertValue = useCase.getStr("assertValue");
 			Object jsonObj = JSONValue.parse(assertValue);
 			if (jsonObj != null && jsonObj instanceof JSONArray) {
+				System.out.println("assertValue===" + assertValue);
+				System.out.println("resultData===" + resultData.toJSONString());
 				JSONArray array = (JSONArray) jsonObj;
 				totalCount = array.size();
 				if (totalCount > 0) {
@@ -169,25 +171,51 @@ public class ApiController extends Controller {
 					for (int i = 0; i < array.size(); i++) {
 						JSONObject check = (JSONObject) array.get(i);
 						caseCondition.put(check.get("en_name"), check);
+						System.out.println("===" + check.get("en_name"));
 					}
 					Iterator it = resultData.entrySet().iterator();
 					while (it.hasNext()) {
 						Map.Entry e = (Map.Entry) it.next();
 						String key = e.getKey().toString();
-						String value = String.valueOf(e.getValue());
-						
-						if (caseCondition.get(key) != null) {
-							JSONObject condition = (JSONObject) caseCondition
-									.get(key);
-							String type = condition.get("type").toString();
-							String default_value = condition.get(
-									"default_value").toString();
-							if (default_value.equals(value)) {
-								passCount = passCount + 1;
-							} else {
-								failCount = failCount + 1;
+						Object valueObj = e.getValue();
+						if(valueObj != null && valueObj instanceof JSONObject){
+							Iterator itValue =((JSONObject)valueObj).entrySet().iterator();
+							while(itValue.hasNext()){
+								Map.Entry eValue = (Map.Entry) itValue.next();
+								String kValue = eValue.getKey().toString();
+								String vValue = String.valueOf(eValue.getValue());
+								if (caseCondition.get(kValue) != null) {
+									JSONObject condition = (JSONObject) caseCondition
+											.get(kValue);
+									String type = condition.get("type").toString();
+									String default_value = condition.get(
+											"default_value").toString();
+									System.out.println(vValue + "===" + default_value);
+									if (default_value.equals(vValue)) {
+										passCount = passCount + 1;
+									} else {
+										failCount = failCount + 1;
+									}
+								}
 							}
 						}
+						else{
+							String value = String.valueOf(valueObj);
+							if (caseCondition.get(key) != null) {
+								JSONObject condition = (JSONObject) caseCondition
+										.get(key);
+								String type = condition.get("type").toString();
+								String default_value = condition.get(
+										"default_value").toString();
+								System.out.println(value + "===" + default_value);
+								if (default_value.equals(value)) {
+									passCount = passCount + 1;
+								} else {
+									failCount = failCount + 1;
+								}
+							}
+						}
+						
 					}
 				}
 
