@@ -139,9 +139,8 @@ function deleteNode(){
 			console.log("deleteNode=====", data);
 	   		if(data.state == 'success'){
 	   			treeManager.remove(select_node.target);
-	   			$.ligerDialog.success('删除成功');
+	   			//$.ligerDialog.success('删除成功');
 	   			
-	   			//dialog.close();
 	   		}
 	   		else{
 	   			$.ligerDialog.error('删除失败');
