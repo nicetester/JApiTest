@@ -20,6 +20,24 @@
  	/* background-color:#339e35; */
  	margin-right:8px;
  }
+ .stateResult{
+ padding: 8px; 
+ margin-top: 1em; 
+ background-color: #d4d4d4; 
+ color: white;
+ }
+  .stateResult_success{
+ padding: 8px; 
+ margin-top: 1em; 
+ background-color: green; 
+ color: white;
+ }
+  .stateResult_error{
+ padding: 8px; 
+ margin-top: 1em; 
+ background-color: red; 
+ color: white;
+ }
 </style>
 <script type="text/javascript">
 var Tool = function(){
@@ -454,7 +472,7 @@ function assert_maingrid_parse(){
 <table id="table" cellpadding="20px">
 <tr>
 	<td>
-		<div id="stateResult" style="padding: 8px; margin-top: 1em; background-color: #d4d4d4; color: white;">
+		<div id="stateResult">
 			1/1 用例完成：<strong id="passCount">0</strong> 通过，<strong id="failCount">0</strong> 失败，<!-- ，<strong id="exceCount">0</strong> 异常 -->
 			耗时：<strong id="time">0ms</strong>
 		</div>
@@ -572,7 +590,8 @@ $("#btnExc").click(function(){
 		parseGrid($.request_maingrid, $("#request"));
 	}
 	$('#response').val('');
-	$('#stateResult').css('background-color', '#d4d4d4');
+	//$('#stateResult').css('background-color', '#d4d4d4');
+	$('#stateResult').attr('class', 'stateResult');
 	// $('#stateResult').hide();
 	var id = $("#id").val();
 	var url = $("#url").val();
@@ -587,13 +606,15 @@ $("#btnExc").click(function(){
 		   		if(data.state == 'success'){
 		   			$('#response').val(JSON.stringify(data.data))
 					$('#stateResult').show();
-		   			$('#stateResult').css('background-color', 'green');
+		   			$('#stateResult').attr('class', 'stateResult_success');
+		   			//$('#stateResult').css('background-color', 'green');
 		   			$('#passCount').text(data.passCount);
 		   			$('#failCount').text(data.failCount);
 		   		}
 		   		else{
 		   			$('#stateResult').show();
-		   			$('#stateResult').css('background-color', 'red');
+		   			$('#stateResult').attr('class', 'stateResult_error');
+		   			//$('#stateResult').css('background-color', 'red');
 		   		}
 		   		$('#time').text(calTime(data.time));
 		   		

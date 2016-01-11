@@ -162,8 +162,6 @@ public class ApiController extends Controller {
 			String assertValue = useCase.getStr("assertValue");
 			Object jsonObj = JSONValue.parse(assertValue);
 			if (jsonObj != null && jsonObj instanceof JSONArray) {
-				System.out.println("assertValue===" + assertValue);
-				System.out.println("resultData===" + resultData.toJSONString());
 				JSONArray array = (JSONArray) jsonObj;
 				totalCount = array.size();
 				if (totalCount > 0) {
@@ -171,7 +169,6 @@ public class ApiController extends Controller {
 					for (int i = 0; i < array.size(); i++) {
 						JSONObject check = (JSONObject) array.get(i);
 						caseCondition.put(check.get("en_name"), check);
-						System.out.println("===" + check.get("en_name"));
 					}
 					Iterator it = resultData.entrySet().iterator();
 					while (it.hasNext()) {
@@ -190,7 +187,6 @@ public class ApiController extends Controller {
 									String type = condition.get("type").toString();
 									String default_value = condition.get(
 											"default_value").toString();
-									System.out.println(vValue + "===" + default_value);
 									if (default_value.equals(vValue)) {
 										passCount = passCount + 1;
 									} else {
@@ -207,7 +203,6 @@ public class ApiController extends Controller {
 								String type = condition.get("type").toString();
 								String default_value = condition.get(
 										"default_value").toString();
-								System.out.println(value + "===" + default_value);
 								if (default_value.equals(value)) {
 									passCount = passCount + 1;
 								} else {
