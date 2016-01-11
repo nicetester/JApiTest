@@ -174,20 +174,43 @@ public class ApiController extends Controller {
 					while (it.hasNext()) {
 						Map.Entry e = (Map.Entry) it.next();
 						String key = e.getKey().toString();
-						String value = String.valueOf(e.getValue());
-						
-						if (caseCondition.get(key) != null) {
-							JSONObject condition = (JSONObject) caseCondition
-									.get(key);
-							String type = condition.get("type").toString();
-							String default_value = condition.get(
-									"default_value").toString();
-							if (default_value.equals(value)) {
-								passCount = passCount + 1;
-							} else {
-								failCount = failCount + 1;
+						Object valueObj = e.getValue();
+						if(valueObj != null && valueObj instanceof JSONObject){
+							Iterator itValue =((JSONObject)valueObj).entrySet().iterator();
+							while(itValue.hasNext()){
+								Map.Entry eValue = (Map.Entry) itValue.next();
+								String kValue = eValue.getKey().toString();
+								String vValue = String.valueOf(eValue.getValue());
+								if (caseCondition.get(kValue) != null) {
+									JSONObject condition = (JSONObject) caseCondition
+											.get(kValue);
+									String type = condition.get("type").toString();
+									String default_value = condition.get(
+											"default_value").toString();
+									if (default_value.equals(vValue)) {
+										passCount = passCount + 1;
+									} else {
+										failCount = failCount + 1;
+									}
+								}
 							}
 						}
+						else{
+							String value = String.valueOf(valueObj);
+							if (caseCondition.get(key) != null) {
+								JSONObject condition = (JSONObject) caseCondition
+										.get(key);
+								String type = condition.get("type").toString();
+								String default_value = condition.get(
+										"default_value").toString();
+								if (default_value.equals(value)) {
+									passCount = passCount + 1;
+								} else {
+									failCount = failCount + 1;
+								}
+							}
+						}
+						
 					}
 				}
 
