@@ -1,1 +1,3 @@
 WebRoot/WEB-INF/classes/
+.sonar/
+sonar-project.properties

@@ -21,6 +21,8 @@ import com.penngo.util.Tool;
 
 
 public class ApiController extends Controller {
+	private final static String KEY_ASSERTVALUE = "assertValue";
+	private final static String KEY_CASE_TIME = "caseTime";
 	public void index() {
 		render("index.html");
 	}
@@ -30,10 +32,10 @@ public class ApiController extends Controller {
 		String id = this.getPara("id");
 		UseCase useCase = UseCase.model.findById(id);
 		this.setAttr("id", id);
-		String assertValue = useCase.get("assertValue") != null
-				&& !useCase.get("assertValue").toString().equals("") ? useCase
-				.getStr("assertValue") : "[]";
-		useCase.set("assertValue", assertValue);
+		String assertValue = useCase.get(KEY_ASSERTVALUE) != null
+				&& !"".equals(useCase.get(KEY_ASSERTVALUE).toString()) ? useCase
+				.getStr(KEY_ASSERTVALUE) : "[]";
+		useCase.set(KEY_ASSERTVALUE, assertValue);
 		this.setAttr("useCase", useCase);
 
 		render("api.html");
@@ -58,9 +60,9 @@ public class ApiController extends Controller {
 			json.put("case_type", type);
 			json.put("case_process", "0%");
 
-			int case_time = uc.get("caseTime") != null ? uc
-					.getInt("caseTime") + 1 : 0;
-			json.put("case_time", case_time);
+			int caseTime = uc.get(KEY_CASE_TIME) != null ? uc
+					.getInt(KEY_CASE_TIME) + 1 : 0;
+			json.put("case_time", caseTime);
 			resultList.add(json);
 		}
 		this.setAttr("caseList", JSONValue.toJSONString(resultList));
@@ -69,8 +71,7 @@ public class ApiController extends Controller {
 	}
 
 	public void save() {
-		UseCase useCase = this.saveUseCase();
-		String resultData = "";
+		this.saveUseCase();
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("state", "success");
 
@@ -253,9 +254,9 @@ public class ApiController extends Controller {
 			map.put("state", "error");
 			map.put("msg", resultData.get("msg"));
 		}
-		int case_time = useCase.get("caseTime") != null ? useCase
-				.getInt("caseTime") + 1 : 0;
-		useCase.set("caseTime", case_time);
+		int case_time = useCase.get(KEY_CASE_TIME) != null ? useCase
+				.getInt(KEY_CASE_TIME) + 1 : 0;
+		useCase.set(KEY_CASE_TIME, case_time);
 		useCase.update();
 		map.put("data", resultData);
 		map.put("case_time", case_time);
@@ -326,7 +327,7 @@ public class ApiController extends Controller {
 			}
 			useCase.set("pid", Integer.valueOf(pid));
 			useCase.set("name", name);
-			useCase.set("caseTime", 0);
+			useCase.set(KEY_CASE_TIME, 0);
 			useCase.set("dataSort", 0);
 			useCase.set("timeOut", 30);
 			if(id > 0 ){
@@ -378,7 +379,7 @@ public class ApiController extends Controller {
 			useCase.set("assertValue", copyCase.get("assertValue"));
 			useCase.set("dataSort", 0);
 			useCase.set("timeOut", copyCase.get("timeOut"));
-			useCase.set("caseTime", 0);
+			useCase.set(KEY_CASE_TIME, 0);
 		
 			useCase.save();
 			JSONObject json = new JSONObject();
