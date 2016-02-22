@@ -30,7 +30,6 @@ function addProject(item, dialog){
 	$("#directory_id").val("");
 	$("#directory_name").val("");
 	if(node_data.node_type == "project"){
-		//console.log("2===", node_data, node_data.text);
 		$("#directory_id").val(node_data.data_id);
 		$("#directory_name").val(node_data.text);
 	}
@@ -140,7 +139,6 @@ function deleteNode(){
 	$.ligerDialog.confirm('是否确定删除该目录', function (yes) {if(yes == true){
 		$.post("/api/deleteNode", {"id":id, "type":type},
 		   function(data){
-			console.log("deleteNode=====", data);
 	   		if(data.state == 'success'){
 	   			treeManager.remove(select_node.target);
 	   			//$.ligerDialog.success('删除成功');
@@ -198,8 +196,18 @@ function createCopyCase(){
 	                $.post("/api/copyCase", {"id":id, "pid": pid, "name":name},
            			   function(data){
 		                	if(data.state == 'success'){
-		                		var parent = treeManager.getParentTreeItem(select_node.target);
-	                			treeManager.append(parent, data.data);
+		                		var project_datas = treeManager.data[0].children;
+		                		var node_copy = null;
+		                		for(i = 0; i < project_datas.length; i++){
+		                			var node = project_datas[i];
+		                			if(node.node_type == 'project' && node.data_id == pid){
+		                				node_copy = treeManager.nodes[node.treedataindex];
+		                				
+		                				break;
+		                			}
+		                		}
+		                		//var parent = treeManager.getParentTreeItem(select_node.target);
+	                			treeManager.append(node_copy, data.data);
 	                			$.ligerDialog.success('复制用例成功');
 	                			dialog.hide();
 		                	}
