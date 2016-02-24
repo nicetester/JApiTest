@@ -98,10 +98,10 @@ function runClick(){
 		$.ligerDialog.warn('请先选择需要执行的用例')
 	}
 }
-function run(data, i){
-	if(i < data.length){
-		var r = data[i];
-		$.ajax({   
+function run(rows, i){
+	if(i < rows.length){
+		var r = rows[i];
+		$.ajax({
 		    url:'/api/executeById',     
 		    type:'post',     
 		    data:{"id":r.case_id},
@@ -109,22 +109,34 @@ function run(data, i){
 		    async : true,     
 		    dataType: "json",
 		    error:function (XMLHttpRequest, textStatus, errorThrown) {
-		        
+		    	$("#failCount").text(parseInt($("#failCount").text()) + 1);
+		    	var selected = $.case_maingrid.getRow(r.__id);
+	            if (!selected) { 
+	            	alert('请选择任务'); return; 
+	            }
+	            $.case_maingrid.updateRow(selected,{
+	            	case_state: '失败',
+	            	case_process:'100%',
+	            	case_time:0
+	            });
 		    },
 		    success:function(data){
+		    	$("#passCase").text(i + 1);
+		    	var selected = $.case_maingrid.getRow(r.__id);
 		    	if(data.state == "success"){
-		    		var selected = $.case_maingrid.getRow(r.__id);
+		    		
 		            if (!selected) { 
 		            	alert('请选择任务'); return; 
 		            }
+		            var case_state = data.failCount == 0 ? '成功' : '失败';
 		            $.case_maingrid.updateRow(selected,{
-		            	case_state: '成功',
+		            	case_state: case_state,
 		            	case_process:'100%',
 		            	case_time:data.case_time
 		            });
 		            
 		            
-		            $("#passCase").text(i + 1);
+		            
 		            $("#passCount").text(parseInt($("#passCount").text()) + data.passCount);
 		            $("#failCount").text(parseInt($("#failCount").text()) + data.failCount);
 		            $.totalTime = $.totalTime + parseInt(data.time);
@@ -133,11 +145,17 @@ function run(data, i){
 		            
 		    	}
 		    	else{
-		    		
+		    		 var case_state = data.failCount == 0 ? '成功' : '失败';
+			            $.case_maingrid.updateRow(selected,{
+			            	case_state: case_state,
+			            	case_process:'100%',
+			            	case_time:data.case_time
+			            });
+			            $("#failCount").text(parseInt($("#failCount").text()) + 1);
 		    	}
 		    },
 		    complete:function (XMLHttpRequest, textStatus) {
-		    	run(data, i + 1);
+		    	run(rows, i + 1);
 		    	var failCount = parseInt($("#failCount").text());
 		    	if(failCount > 0){
 		    		$('#stateResult').css('background-color', 'red');

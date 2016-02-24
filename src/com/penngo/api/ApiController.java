@@ -130,6 +130,7 @@ public class ApiController extends Controller {
 		Map<String, Object> resultData = null;
 		Map<String, Object> map = new HashMap<String, Object>();
 		resultData = CaseHttpRun.httpRunJson(url, request, method, 30);
+		System.out.println("resultData========" + resultData);
 		map.put("time", resultData.get("time"));
 		if (resultData.get("state").equals("success")) {
 			JSONObject countMap;
@@ -148,7 +149,7 @@ public class ApiController extends Controller {
 			
 			
 		} else {
-			map.put("state", "error");
+			map.put("state", resultData.get("state"));
 			map.put("msg", resultData.get("msg"));
 		}
 		this.renderJson(JSONValue.toJSONString(map));

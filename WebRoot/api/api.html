@@ -513,7 +513,7 @@ function assert_maingrid_parse(){
 <div id="navtab"  style="width:600px;height: 30%;overflow:hidden; border:1px solid #A3C0E8;margin-top:6px; ">
 	<!-- ==========请求报文start=========== -->
 	<div tabid="home" title="请求参数" style="height:200px;" lselected="true"  >
-		<textarea id="request" rows="7" cols="80" style="width:590px;">${(useCase.request)!}</textarea>&nbsp;&nbsp;
+		<textarea id="request" rows="7" cols="80" style="width:99%;height:97%;">${(useCase.request)!}</textarea>&nbsp;&nbsp;
 	</div>
 	<!-- ==========请求报文end=========== -->
 	<div  title="请求参数解析"  >
@@ -529,7 +529,7 @@ function assert_maingrid_parse(){
 
 <div id="navtab2"  style="width:600px;height: 30%;overflow:hidden; border:1px solid #A3C0E8;margin-top:6px; ">
 	<div  tabid="home" title="响应内容" style="height:200px" lselected="true">
-	    <textarea id="response" rows="7" cols="80" style="width: 590px;"></textarea>&nbsp;&nbsp;
+	    <textarea id="response" rows="7" cols="80" style="width:99%;height:97%;"></textarea>&nbsp;&nbsp;
 	</div>
 	<div  title="响应内容解析">
 		<!-- 
@@ -590,9 +590,7 @@ $("#btnExc").click(function(){
 		parseGrid($.request_maingrid, $("#request"));
 	}
 	$('#response').val('');
-	//$('#stateResult').css('background-color', '#d4d4d4');
 	$('#stateResult').attr('class', 'stateResult');
-	// $('#stateResult').hide();
 	var id = $("#id").val();
 	var url = $("#url").val();
 	var method = $("#method").val();
@@ -601,24 +599,50 @@ $("#btnExc").click(function(){
 	var request = $("#request").val();
 	var assertValue = getAssertValue();
 	var timeOut = $("#timeOut").val();
-	$.post("/api/execute", {"id":id, "url":url, "method": method, "type":type, "code":code, "request":request, "assertValue":assertValue,"timeOut":timeOut},
-			   function(data){
-		   		if(data.state == 'success'){
-		   			$('#response').val(JSON.stringify(data.data))
-					$('#stateResult').show();
-		   			$('#stateResult').attr('class', 'stateResult_success');
-		   			//$('#stateResult').css('background-color', 'green');
-		   			$('#passCount').text(data.passCount);
-		   			$('#failCount').text(data.failCount);
-		   		}
-		   		else{
-		   			$('#stateResult').show();
-		   			$('#stateResult').attr('class', 'stateResult_error');
-		   			//$('#stateResult').css('background-color', 'red');
-		   		}
-		   		$('#time').text(calTime(data.time));
-		   		
-			   }, "json");
+
+	
+	$.ajax({
+	    url:'/api/execute',     
+	    type:'post',     
+	    data:{"id":id, "url":url, "method": method, "type":type, "code":code, "request":request, "assertValue":assertValue,"timeOut":timeOut},
+	    cache: false,
+	    async : true,     
+	    dataType: "json",
+	    error:function (xmlHttpRequest, textStatus, errorThrown) {
+	    	$('#response').val(xmlHttpRequest.responseText)
+   			$('#passCount').text(0);
+   			$('#failCount').text(1);
+	    },
+	    success:function(data){
+	    	if(data.state == 'success'){
+	   			$('#response').val(JSON.stringify(data.data))
+	   			$('#passCount').text(data.passCount);
+	   			$('#failCount').text(data.failCount);
+	   		}
+	    	else if(data.state == 'exception'){
+	    		$('#response').val('访问失败，请检查http地址或参数是否有错');
+	    		$('#passCount').text(0);
+	   			$('#failCount').text(1);
+	    	}
+	    	else{
+	    		$('#passCount').text(0);
+	   			$('#failCount').text(1);
+	    	}
+	   		$('#time').text(calTime(data.time));
+	    },
+	    complete:function (XMLHttpRequest, textStatus) {
+	    	var failCount = parseInt($("#failCount").text());
+	    	var passCount = parseInt($("#passCount").text());
+	    	if(failCount > 0){
+	    		$('#stateResult').css('background-color', 'red');
+	    	}
+	    	else{
+	    		$('#stateResult').css('background-color', 'green');
+	    	}
+	    	$('#stateResult').show();
+	    }
+	});  
+	
 });
 
 

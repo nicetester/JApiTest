@@ -53,7 +53,7 @@ public class CaseHttpRun {
 			}
 			Response res = conn.execute();
 			String data = res.body();
-			System.out.println("httpRunJson========" + resultData);
+			System.out.println("httpRunJson========" + data);
 			if (data != null && !data.equals("")) {
 				resultData = JSONValue.parse(data);
 				if(resultData != null){
@@ -74,7 +74,8 @@ public class CaseHttpRun {
 		} catch (Exception e) {
 			map.put("state", "exception");
 			map.put("msg", e.getMessage());
-			e.printStackTrace();
+//			e.printStackTrace();
+			System.out.println("url error==========" + url + ", error info:" + e.getMessage());
 		}
 		long end = System.currentTimeMillis();
 		map.put("time", end - start);
