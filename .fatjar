@@ -1,5 +1,5 @@
 #Fat Jar Configuration File
-#Wed Jan 06 22:35:53 CST 2016
+#Tue Jan 12 10:10:41 CST 2016
 onejar.license.required=true
 manifest.classpath=
 manifest.removesigners=true
@@ -10,5 +10,5 @@ manifest.mainclass=com.penngo.common.ApiConfig
 manifest.file=MANIFEST.MF
 jarname.isextern=true
 onejar.expand=
-excludes=<jar|c3p0-0.9.1.2.jar>;<jar|freemarker-2.3.20.jar>;<jar|jfinal-2.0-bin-with-src.jar>;<jar|log4j-1.2.16.jar>;<jar|jetty-server-8.1.8.jar>;<jar|json_simple-1.1.jar>;<jar|jsoup-1.7.3.jar>;<jar|sqlite-jdbc-3.7.15-SNAPSHOT-2.jar>
+excludes=<jar|c3p0-0.9.1.2.jar>;<jar|freemarker-2.3.20.jar>;<jar|jfinal-2.0-bin-with-src.jar>;<jar|json_simple-1.1.jar>;<jar|jsoup-1.7.3.jar>;<jar|log4j-1.2.16.jar>;<jar|sqlite-jdbc-3.8.11.2.jar>;<jar|jetty-server-8.1.8.jar>
 includes=

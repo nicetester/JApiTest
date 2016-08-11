@@ -39,7 +39,7 @@ public class CaseHttpRun {
 							"Mozilla/5.0 (Linux; Android 4.2.1; en-us; Nexus 4 Build/JOP40D) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19");
 			if (parame != null && !parame.trim().equals("")) {
 				Object jsonObject = JSONValue.parse(parame);
-				System.out.println("httpRunJson========parame:" + jsonObject);
+//				System.out.println("httpRunJson========parame:" + jsonObject);
 				if (jsonObject != null && jsonObject instanceof JSONObject) {
 					JSONObject data = (JSONObject) jsonObject;
 					conn.data(data);
@@ -53,7 +53,7 @@ public class CaseHttpRun {
 			}
 			Response res = conn.execute();
 			String data = res.body();
-			System.out.println("httpRunJson========" + resultData);
+//			System.out.println("httpRunJson========" + data);
 			if (data != null && !data.equals("")) {
 				resultData = JSONValue.parse(data);
 				if(resultData != null){
@@ -74,7 +74,8 @@ public class CaseHttpRun {
 		} catch (Exception e) {
 			map.put("state", "exception");
 			map.put("msg", e.getMessage());
-			e.printStackTrace();
+//			e.printStackTrace();
+			System.out.println("url error==========" + url + ", error info:" + e.getMessage());
 		}
 		long end = System.currentTimeMillis();
 		map.put("time", end - start);
