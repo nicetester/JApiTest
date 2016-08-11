@@ -7,9 +7,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
  
+
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Db;
@@ -261,7 +265,76 @@ public class ApiController extends Controller {
 		map.put("case_time", case_time);
 		this.renderJson(JSONValue.toJSONString(map));
 	}
-
+ 
+	/**
+	 * 先建一个http页面，这个页面通过模拟
+	 */
+	public void jsoupProject(){
+		String body = "";
+		try{
+			Document doc = Jsoup.connect("http://localhost:8000/api/addProject")
+			.data("id", "").data("directory_name", "新建" + System.currentTimeMillis()/10000)
+			.ignoreContentType(true).post();
+			body = doc.body().text();
+			System.out.println(body);
+			
+		}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+		this.renderText(body);
+//		this.renderJson();
+	}
+	
+	public void testProject() {
+		String id = "";
+		String directory_name = "新建目录" + System.currentTimeMillis()/10000;
+		Project project;
+		if(!id.equals("")){
+			project = Project.model.findById(id);
+		}
+		else{
+			project = new Project();
+		}
+		project.set("name", directory_name);
+		Map<String, Object> result = new HashMap<String, Object>();
+		try {
+			if(!id.equals("")){
+				project.update();
+			}
+			else{
+				project.save();
+			}
+			result.put("state", "success");
+			JSONObject json = new JSONObject();
+			json.put("isexpand", "false");
+			json.put("slide", false);
+			json.put("data_id", project.getInt("id"));
+			json.put("text", project.getStr("name"));
+			json.put("node_type", project.TYPE);
+			json.put("url", "/api/all?id=" + project.getInt("id"));
+			//json.put("url", "");
+			json.put("children", new ArrayList());
+//			JSONArray array = new JSONArray();
+//			array.add(json);
+//			result.put("data", array);
+			
+			if(!id.equals("")){
+				result.put("data", json);
+			}
+			else{
+				JSONArray array = new JSONArray();
+				array.add(json);
+				result.put("data", array);
+			}
+			
+		} catch (Exception e) {
+			result.put("state", "error");
+			e.printStackTrace();
+		}
+		this.renderJson(JSONValue.toJSONString(result));
+	}
+	
 	public void addProject() {
 		String id = this.getPara("id");
 		String directory_name = this.getPara("directory_name");
