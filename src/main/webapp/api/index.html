@@ -1,0 +1,533 @@
+<#include "/common/main_layout.html"/>
+<@layout>
+<style type="text/css">
+.tree
+{
+    width: 100%;
+    height: 100%;
+    /*margin: 10px;*/
+    /*border: 1px solid #ccc;*/
+    overflow: auto;
+   
+}
+#tree1
+{
+    margin-bottom:30px;
+}
+</style>
+
+<script>
+var NOTE_TYPE = "";
+var menu;
+var treeManager;
+var node_data;
+var select_node;
+
+//添加目录
+function addProject(item, dialog){
+	//var id = node_data.data_id;    directory_name
+	//console.log("1===", node_data, node_data.node_type);
+	$("#directory_id").val("");
+	$("#directory_name").val("");
+	if(node_data.node_type == "project"){
+		$("#directory_id").val(node_data.data_id);
+		$("#directory_name").val(node_data.text);
+	}
+	
+	 $.ligerDialog.open({
+         target: $("#case_target"), 
+         buttons: [
+             { text: '确定', onclick: function (item, dialog) { 
+            	var id = $("#directory_id").val();
+            	var directory_name = $("#directory_name").val();
+            	$.post("/api/addProject", {"id":id, "directory_name": directory_name},
+            			   function(data){
+            		   		if(data.state == 'success'){
+           		    			if(id == ""){
+           		    				if(select_node.data.isexpand == 'true' || (!select_node.data.children || select_node.data.children.length > 0)){
+           		    					treeManager.append(select_node.target, data.data);
+           		    				}
+           		    			}
+           		    			else{
+           		    				treeManager.update(select_node.target, {text:data.data.text});
+           		  	           		var tabid = data.data.node_type + data.data.data_id;
+           		    				$.tab.setHeader(tabid, data.data.text);
+           		    			}
+            		   			$.ligerDialog.success('添加成功');
+            		   		}
+            		   		else{
+            		   			$.ligerDialog.error('添加失败');
+            		   		}
+            		   		dialog.hide();
+            			}, "json");
+	             }},
+	         { text: '取消', onclick: function (item, dialog) { 
+	        	 dialog.hide();
+ 	         } }
+     ]
+});	
+}
+
+//添加案例
+function addCase(item, dialog){
+	//console.log("addCase=0====",item, node_data);
+	var pid = node_data.data_id;
+	if(node_data.node_type == "useCase"){
+		pid = node_data.pid;
+		$("#case_dir_name").val(node_data.text);
+	}
+	$("#case_dir_pid").val(pid);
+	 $.ligerDialog.open({
+		 height:300,
+		 width: 400,
+         target: $("#case_dir_target"), 
+         buttons: [
+             { text: '确定', onclick: function (item, dialog) {
+                 var id = 0;
+                 if(node_data.node_type == "useCase"){
+             		id = node_data.data_id;
+             	 }
+                 var name = $("#case_dir_name").val();
+                 $.post("/api/addCase", {"id":id, "pid": pid, "name":name},
+            			   function(data){
+			                	if(data.state == 'success'){
+			                		if(select_node.data.isexpand == 'true' || (!select_node.data.children || select_node.data.children.length > 0)){
+			                			if(id == 0){
+			                				treeManager.append(select_node.target, data.data);
+			                			}
+			                			else{
+			                				treeManager.update(select_node.target, data.data);
+			                				var tabid = data.data.node_type + data.data.data_id;
+		           		    				$.tab.setHeader(tabid, data.data.text);
+			                			}
+			        		       	}
+				                	$.ligerDialog.success('添加成功');
+			              	 		dialog.hide();
+			  			   		}
+			  			   		else{
+			  			   			$.ligerDialog.error('添加失败');
+			  			   		}
+            			   }, "json");
+  
+	             }},
+	         { text: '取消', onclick: function (item, dialog) { 
+		        
+		         dialog.hide();
+  	         } }
+     ]
+});
+}
+//加载子节点
+function getChildNode(node){
+	var pid = node.data.data_id;
+	//console.log(node.target, pid);
+	$.post("/api/getChildNode", { "node_type": node.data.node_type, "pid":pid},
+			   function(data){
+		 		if(data.state == "success"){
+		 			treeManager.append(node.target, data.data);
+		 		}
+		 		else{
+		 			$.ligerDialog.error('加载失败');
+		 		}
+		    
+			   }, "json");
+}
+function deleteNode(){
+	var id = node_data.data_id;
+	var type = node_data.node_type;
+	///console.log("=====", node_data);
+	$.ligerDialog.confirm('是否确定删除该目录', function (yes) {if(yes == true){
+		$.post("/api/deleteNode", {"id":id, "type":type},
+		   function(data){
+	   		if(data.state == 'success'){
+	   			treeManager.remove(select_node.target);
+	   			//$.ligerDialog.success('删除成功');
+	   			
+	   		}
+	   		else{
+	   			$.ligerDialog.error('删除失败');
+	   		}
+		   }, "json");
+		}
+	});
+	
+}
+// 复制用例
+function copyCase(item, dialog){
+	$.post("/api/getChildNode", {"node_type":"projects"},
+			   function(data){
+		   		if(data.state == 'success'){
+		   			// copy_id  copy_name copy_project_name  node_data
+		   			var datas = data.data;
+		   			var ops = "";
+		   			var projects = {};
+		   			for(var i = 0; i < datas.length; i++){
+		   				var d = datas[i];
+		   				ops = ops + '<option value="' + d['data_id'] + '">' + d['text'] + '</option>';
+		   				projects[d['data_id']] = d['text'];
+		   			}
+		   			$("#copy_pid").html(ops);
+		   			$("#copy_id").val(node_data.data_id);
+		   			$("#copy_name").val(node_data.text);
+		   			
+		   			$("#copy_project_name").val(projects[node_data.pid]);
+		   			$("#copy_new_name").val(node_data.text);
+		   			
+		   			createCopyCase();
+		   		}
+		   		else{
+		   			$.ligerDialog.error('删除失败');
+		   		}
+			   }, "json");
+	
+	
+}
+
+function createCopyCase(){
+	 $.ligerDialog.open({
+			height:300,
+			width: 400,
+	        target: $("#copy_target"), 
+	        buttons: [
+	            { text: '确定', onclick: function (item, dialog) {
+	            	var id = node_data.data_id;
+	                var name = $("#copy_new_name").val();
+	            	var pid = $("#copy_pid").val();
+	                $.post("/api/copyCase", {"id":id, "pid": pid, "name":name},
+           			   function(data){
+		                	if(data.state == 'success'){
+		                		var project_datas = treeManager.data[0].children;
+		                		var node_copy = null;
+		                		for(i = 0; i < project_datas.length; i++){
+		                			var node = project_datas[i];
+		                			if(node.node_type == 'project' && node.data_id == pid){
+		                				node_copy = treeManager.nodes[node.treedataindex];
+		                				
+		                				break;
+		                			}
+		                		}
+		                		//var parent = treeManager.getParentTreeItem(select_node.target);
+	                			treeManager.append(node_copy, data.data);
+	                			$.ligerDialog.success('复制用例成功');
+	                			dialog.hide();
+		                	}
+		                	else{
+		                		$.ligerDialog.error('复制用例失败');
+		                		dialog.hide();
+		                	}
+		                	
+           			   }, "json");
+		             }},
+		         { text: '取消', onclick: function (item, dialog) {
+			         dialog.hide();
+	 	         }}
+	    ]
+	});
+}
+//
+$(function (){
+	// 案例弹出菜单///////////////////////////////////
+ 	 var project_menu = $.ligerMenu({ top: 100, left: 100, width: 120, items:
+        [
+            { text: '添加项目', icon: 'add', click:addProject}
+        //{ text: '查看', click: function(){} }
+        ]
+        });
+	
+    var  case_menu = $.ligerMenu({ top: 100, left: 100, width: 120, items:
+        [
+         { text: '添加用例', click: addCase, icon: 'add' },
+         { text: '修改项目', click: addProject, icon:'edit'},
+         { line: true },
+         { text: '删除项目', click: deleteNode, icon:'delete' }
+         ]
+         });
+    var  caseItem_menu = $.ligerMenu({ top: 100, left: 100, width: 120, items:
+        [
+         { text: '修改用例名', click: addCase, icon:'edit' },
+         { text: '复制用例', click: copyCase, icon:'database' },
+         { line: true },
+         { text: '删除用例', click: deleteNode, icon:'delete' }
+         ]
+         });
+    //caseItem_menu.show({ top: e.pageY, left: e.pageX });
+		// 菜单
+		treeManager = $("#tree1").ligerTree({
+	       data : [{ text: '所有项目', node_type:'projects', slide: false, isexpand:"false",children:[]}],
+	       checkbox: false,
+	       slide: false,
+	       nodeWidth: 120,
+	       attribute: ['nodename', 'url'],
+	       onSelect: function (node)
+	       {
+	           if (!node.data.url) {
+	        	   return;
+	           }
+	           var node_type = node.data.node_type;
+	           var data_id = node.data.data_id;
+	           var tabid = node_type + data_id;
+	           //var tabid = $(node.target).attr("tabid");
+	           //if (!tabid)
+	           //{
+	           //    tabid = new Date().getTime();
+	           //    $(node.target).attr("tabid", tabid)
+	           //} 
+	           f_addTab(tabid, node.data.text, node.data.url);
+	       },
+	       onContextmenu: function (node, e){
+	       	select_node = node;
+	       	node_data = node.data;
+	           var node_type = node_data.node_type;
+	           actionNodeID = node_data.data_id;
+				
+	           if(node_type == 'projects'){
+	           		project_menu.show({ top: e.pageY, left: e.pageX });
+	           }
+	           else if(node_type == "project"){
+	           		case_menu.show({ top: e.pageY, left: e.pageX });
+	           }
+	           else if(node_type == "useCase"){
+	        	   caseItem_menu.show({ top: e.pageY, left: e.pageX });
+	           }
+	           return false;
+	       },
+	       onExpand: function(node, e){
+	    	   node.data.isexpand = 'true';
+		       	if(!node.data.children || node.data.children.length == 0){
+		       		getChildNode(node);
+		       	}
+	       },
+	       onCollapse:function(node, e){
+	    	   node.data.isexpand = 'false';
+	       }
+	   });
+		
+		
+		var f_addTab = function(tabid, text, url)
+        {
+            tab.addTabItem({
+                tabid: tabid,
+                text: text,
+                url: url,
+                height:'100%',
+                callback: function ()
+                {
+                    //addShowCodeBtn(tabid); 
+                    //addFrameSkinLink(tabid); 
+                }
+            });
+        }
+		
+ 	  //右边选项卡
+      //Tab
+      var tab = $.tab = $("#framecenter").ligerTab({
+          height: '100%',
+          changeHeightOnResize:true,
+          showSwitchInTab : true,
+          showSwitch: true,
+          onAfterAddTabItem: function (tabdata){
+          },
+          onAfterRemoveTabItem: function (tabid){
+          },
+          onReload: function (tabdata){
+          }
+      });
+});
+
+</script>
+<div id="layout1">
+ 	
+	<div position="left" title="主要菜单" id="accordion1">
+
+		<div title="功能列表" class="tree">
+			<ul id="tree1">
+		
+		</div>
+	</div>
+	<div position="center"  id="framecenter">
+		<div tabid="home" title="首页" lselected="true"   >
+       			<div id="maingrid1" style="margin:10px;height:700px" >
+       			<h3>JApiTest接口测试工具</h3><br/>
+       			<h3>
+       				问题反馈:<a href="http://git.oschina.net/penngo/JApiTest/issues">http://git.oschina.net/penngo/JApiTest/issues</a>
+       			</h3>
+       			</div>
+        </div>
+       
+
+	</div>
+	<!-- 
+	<div position="right"></div>
+	 -->
+	
+
+</div>
+
+<div style="display: none;">
+
+<!-- 添加案例目录  -->
+<div id="case_target" style="width:200px; margin:3px; display:none;">
+    <h3>请输入目录名</h3>
+    <div>
+        <input type="hidden" id="directory_id" name="directory_id" />
+        <input type="text" id="directory_name" name="directory_name" /><br />
+    </div>
+ </div>
+ <!-- 添加目录end  -->
+ 
+ <!-- 添加案例  -->
+<div id="case_dir_target" style="width:400px; margin:3px; display:none;">
+    <h3>请输入用例名</h3>
+    <div>
+        <table>
+            <tr>
+                <td>父目录</td>
+                <td><input type="text" id="case_dir_pid" readonly name="case_dir_pid" /></td>
+                <td>
+                 <!-- <input type="text" id="case_dir_username" readonly name="case_dir_username" />  -->
+                </td>
+            </tr>
+            <tr>
+                <td>用例名称</td>
+                <td><input type="text" id="case_dir_name" name="case_dir_name" /></td>
+                <td></td>
+            </tr>
+            
+        </table>
+    </div>
+ </div>
+ <!-- 添加目录end  -->
+ 
+ <!-- 添加流程目录 -->
+ <div id="process_target" style="width:250px; margin:3px; display:none;">
+    <table>
+    	<tr>
+    		<td>请输入目录名</td><td><input type="text" id="process_name" name="process_name" /></td>
+    	</tr>
+    </table>
+ </div>
+  <!-- 添加流程目录 -->
+  
+  <!-- 添加流程 -->
+<div id="process_dir_target" style="width:400px; margin:3px; display:none;">
+    <h3>请输入目录名</h3>
+    <div>
+        <table>
+            <tr>
+                <td>父目录</td>
+                <td><input type="text" id="process_dir_pid" readonly name="process_dir_pid" /></td>
+                <td>
+                 	<input type="text" id="process_dir_username" readonly name="process_dir_username" />
+                </td>
+            </tr>
+            <tr>
+                <td>流程类型</td>
+                <td colspan="2">
+                	<select name="process_type" id="process_type" style="width:200px">
+        				<option value="POST_JSON">HTTP POST JSON</option>
+        				<option value="POST_XML">HTTP POST XML</option>
+        				<option value="GET_JSON">HTTP GET JSON</option>
+        				<option value="GET_XML">HTTP GET XML</option>
+			         </select>
+                </td>
+               
+            </tr>
+            <tr>
+                <td>流程名称</td>
+                <td colspan="2">
+                   <input type="text" id="process_dir_name" name="process_dir_name" style="width:200px"/>
+                     <!-- <input type="text" id="case_dir_type" name="case_dir_type" /> -->
+                </td>
+            </tr>
+            <tr>
+                <td>断点</td>
+                <td>
+                    <select name="process_assert" id="process_assert" >
+        				<option value="y">是</option>
+        				<option value="n">否</option>
+			         </select>
+                     <!-- <input type="text" id="case_dir_type" name="case_dir_type" /> -->
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+ </div>
+ <!-- 添加流程end  -->
+ 
+ <!-- 添加执行目录或执行池 execute_id execute_dir execute_name execute_type -->
+ <div id="execute_target" style="width:350px; margin:3px; display:none;">
+    <table>
+    	<tr>
+    		<td>父目录</td>
+    		<td><input type="text" id="execute_id" name="execute_id" disabled /></td>
+    		<td><input type="text" id="execute_dir" name="execute_dir" disabled style="width:50px;"/></td>
+    	</tr>
+    	<tr>
+    		<td>名称</td>
+    		<td colspan="2"><input type="text" id="execute_name" name="execute_name" style="width:200px;"/></td>
+    	</tr>
+    	<tr>
+    		<td>类型</td>
+    		<td colspan="2">
+    			<select name="execute_type" id="execute_type" >
+        			<option value="<?php echo TestExecuteService::$EXECUTE_TYPE['dir'];?>" selected >目录</option>
+        			<option value="<?php echo TestExecuteService::$EXECUTE_TYPE['task'];?>">任务</option>
+			    </select>
+			</td>
+    	</tr>
+    </table>
+ </div>
+ <!-- 添加执行目录或执行池end -->
+ 
+ <!-- 复制目录 -->
+ <div id="copy_target" style="width:350px; margin:3px; display:none;">
+    <table>
+    	<tr>
+    		<td>用例名：</td>
+    		<td>
+    			<input type="hidden" id="copy_id" name="copy_id" />
+    			<input type="text" id="copy_name" name="copy_name" readonly style="width:200px;"/>
+    		</td>
+    		
+    	</tr>
+    	<tr>
+    		<td>所在项目：</td>
+    		<td>
+    			<input type="text" id="copy_project_name" name="copy_project_name" style="width:200px;" readonly/>
+    			
+    		</td>
+    		
+    	</tr>
+    	<tr>
+    		<td colspan="2">
+    			<!-- 复制到以下项目  -->
+    			<br/><br/>
+    		</td>
+    		
+    		
+    	</tr>
+    	<tr>
+    		<td style="color:green;font-weight:700">新用例名：</td>
+    		<td>
+    			<input type="text" id="copy_new_name" name="copy_new_name" style="width:200px;"/>
+				<span style="color:red;font-weight:700">*</span>
+			</td>
+    	</tr>
+    	<tr>
+    		<td style="color:green;font-weight:700">复制到项目：</td>
+    		<td>
+    			<select name="copy_pid" id="copy_pid" style="width:200px;">
+    				<!-- 
+        			<option value="" selected >目录</option>
+        			<option value="">任务</option>
+        			 -->
+			    </select>
+			    <span style="color:red;font-weight:700">*</span>
+			</td>
+    	</tr>
+    </table>
+ </div>
+ <!-- 复制目录end -->
+ 
+</@layout>
