@@ -7,3 +7,4 @@ JApiTest.iws
 .fatjar
 .settings/
 target/
+japitest.log
