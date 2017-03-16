@@ -1,4 +1,0 @@
-jdbcUrl = jdbc:sqlite:autotest.db
-user = root
-password =
-devMode = true
