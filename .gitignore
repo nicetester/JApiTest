@@ -8,3 +8,4 @@ JApiTest.iws
 .settings/
 target/
 japitest.log
+.project
