@@ -6,3 +6,4 @@ JApiTest.ipr
 JApiTest.iws
 .fatjar
 .settings/
+target/
